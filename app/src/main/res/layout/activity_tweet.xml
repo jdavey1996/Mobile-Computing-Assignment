@@ -7,14 +7,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Fragment2"
+        android:text="TweetActivity"
         android:id="@+id/textView" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tweet"
-        android:id="@+id/loadTweetActivity"
-        android:onClick="startTweetActivity" />
+        android:text="logout"
+        android:id="@+id/logoutBtn"
+        android:onClick="logoutTwitter" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="tweet"
+        android:id="@+id/tweetBtn"
+        android:onClick="startTweet"
+        android:nestedScrollingEnabled="true" />
 
 </LinearLayout>
