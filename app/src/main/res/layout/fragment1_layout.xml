@@ -9,4 +9,16 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Fragment1"
         android:id="@+id/textView" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Get data"
+        android:id="@+id/getBtn" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/listView"
+        android:layout_gravity="center_horizontal" />
 </LinearLayout>
