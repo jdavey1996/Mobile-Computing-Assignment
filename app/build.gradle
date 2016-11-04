@@ -42,4 +42,5 @@ dependencies {
     compile('com.twitter.sdk.android:twitter:2.1.1@aar') {
         transitive = true;
     }
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
 }

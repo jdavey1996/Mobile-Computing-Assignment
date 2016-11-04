@@ -4,16 +4,26 @@ package com.josh_davey.mobile_computing_assignment;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.view.View;
-import android.webkit.CookieManager;
+import android.net.Uri;
 import android.widget.Toast;
 
+import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.TwitterApiClient;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
+import com.twitter.sdk.android.core.models.Media;
+import com.twitter.sdk.android.core.models.Tweet;
+import com.twitter.sdk.android.core.services.MediaService;
+import com.twitter.sdk.android.core.services.StatusesService;
 import com.twitter.sdk.android.tweetcomposer.ComposerActivity;
+
+import java.io.File;
+
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
 ////http://stackoverflow.com/questions/27267809/using-custom-login-button-with-twitter-fabric
 //*****************8https://docs.fabric.io/android/twitter/compose-tweets.html#results*** USED FOR ALL TWITTER STUFF
@@ -27,6 +37,18 @@ public class Tweets {
         this.ctx = ctx;
         this.activity = activity;
         this.mTwitterAuthClient = mTwitterAuthClient;
+    }
+
+    public void checkActiveSession()
+    {
+        //If there's no active session, authorise and initiate callback for authorisation.
+        if (TwitterCore.getInstance().getSessionManager().getActiveSession() == null) {
+            loginTwitter();
+        }
+        else
+        {
+            createTweet();
+        }
     }
 
     public void loginTwitter()
@@ -55,6 +77,9 @@ public class Tweets {
                 .createIntent();
         ctx.startActivity(intent);
     }
+
+
+
 
 
 
