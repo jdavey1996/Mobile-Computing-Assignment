@@ -18,6 +18,20 @@
         android:id="@+id/logoutBtn"
         android:onClick="logoutTwitter" />
 
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tweetTxt" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tweet test"
+        android:id="@+id/button"
+        android:nestedScrollingEnabled="true"
+        android:onClick="tweetStatusTest"
+        android:layout_gravity="center_horizontal" />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

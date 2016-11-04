@@ -12,14 +12,36 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.webkit.CookieManager;
+import android.widget.EditText;
 import android.widget.Toast;
 
+import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.TwitterApiClient;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterCore;
+import com.twitter.sdk.android.core.TwitterException;
+import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
+import com.twitter.sdk.android.core.internal.TwitterApi;
+import com.twitter.sdk.android.core.models.Media;
+import com.twitter.sdk.android.core.models.Tweet;
+import com.twitter.sdk.android.core.services.MediaService;
+import com.twitter.sdk.android.core.services.StatusesService;
 import com.twitter.sdk.android.tweetcomposer.Card;
 
+
 import java.io.File;
+
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Retrofit;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Multipart;
+import retrofit2.http.POST;
+import retrofit2.http.Part;
 
 public class TweetActivity extends Activity {
 
@@ -60,6 +82,7 @@ public class TweetActivity extends Activity {
             Toast.makeText(TweetActivity.this, "saved image", Toast.LENGTH_SHORT).show();
 
             //startTwitter(null);
+
         }
     }
 
@@ -108,5 +131,35 @@ public class TweetActivity extends Activity {
         }
     }
 
+    public void tweetStatusTest(View view) {
+        // final TwitterSession session = TwitterCore.getInstance().getSessionManager().getActiveSession();
+
+       /* File photo = new File(uri.getPath());
+
+        RequestBody file = RequestBody.create(MediaType.parse(photo.toString()), "application/octet-stream");
+
+
+        MediaService ms = twitterApiClient.getMediaService();*/
+
+//https://docs.fabric.io/android/twitter/access-rest-api.html
+//http://stackoverflow.com/questions/31785698/android-adding-image-to-tweet-using-fabric-twitter-rest-api-and-retrofit
+        EditText text = (EditText)findViewById(R.id.tweetTxt);
+
+        TwitterApiClient twitterApiClient = TwitterCore.getInstance().getApiClient();
+        StatusesService statusesService = twitterApiClient.getStatusesService();
+        Call<Tweet> call = statusesService.update(text.getText().toString(), null, false, null, null, null, false, false, null);
+        call.enqueue(new Callback<Tweet>() {
+            @Override
+            public void success(Result<Tweet> result) {
+                //Do something with result
+                Toast.makeText(TweetActivity.this, "Tweeted", Toast.LENGTH_SHORT).show();
+            }
+
+            public void failure(TwitterException exception) {
+                //Do something on failure
+                Toast.makeText(TweetActivity.this, "Not Tweeted", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
 }
