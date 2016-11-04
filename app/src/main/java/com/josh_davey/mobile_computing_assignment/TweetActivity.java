@@ -131,35 +131,50 @@ public class TweetActivity extends Activity {
         }
     }
 
+/*****THIS METHOD IS STILL BEING TESTED - uploads captured image and if successful, tweets it.*/
+    //https://docs.fabric.io/android/twitter/access-rest-api.html
+    //http://stackoverflow.com/questions/31785698/android-adding-image-to-tweet-using-fabric-twitter-rest-api-and-retrofit
+    //*************https://dev.twitter.com/rest/reference/post/statuses/update CHECK THIS OUT....*******
+    //Used for request body initialising Retroyfit 2.0- http://stackoverflow.com/questions/34562950/post-multipart-form-data-using-retrofit-2-0-including-image
     public void tweetStatusTest(View view) {
-        // final TwitterSession session = TwitterCore.getInstance().getSessionManager().getActiveSession();
+        //Get apiclient instance that's authenticated already.
+        final TwitterApiClient twitterApiClient = TwitterCore.getInstance().getApiClient();
 
-       /* File photo = new File(uri.getPath());
+        //Get image taken.
+        File photo = new File(uri.getPath());
 
-        RequestBody file = RequestBody.create(MediaType.parse(photo.toString()), "application/octet-stream");
+        //Create request body with image to upload.
+        RequestBody file = RequestBody.create(MediaType.parse("image/*"), photo);
 
-
-        MediaService ms = twitterApiClient.getMediaService();*/
-
-//https://docs.fabric.io/android/twitter/access-rest-api.html
-//http://stackoverflow.com/questions/31785698/android-adding-image-to-tweet-using-fabric-twitter-rest-api-and-retrofit
-        EditText text = (EditText)findViewById(R.id.tweetTxt);
-
-        TwitterApiClient twitterApiClient = TwitterCore.getInstance().getApiClient();
-        StatusesService statusesService = twitterApiClient.getStatusesService();
-        Call<Tweet> call = statusesService.update(text.getText().toString(), null, false, null, null, null, false, false, null);
-        call.enqueue(new Callback<Tweet>() {
+        //Upload image, request callback.
+        MediaService ms = twitterApiClient.getMediaService();
+        Call<Media> uploadImgCall = ms.upload(file, null, null);
+        uploadImgCall.enqueue(new Callback<Media>() {
             @Override
-            public void success(Result<Tweet> result) {
-                //Do something with result
-                Toast.makeText(TweetActivity.this, "Tweeted", Toast.LENGTH_SHORT).show();
+            public void success(Result<Media> result) {
+                Toast.makeText(TweetActivity.this, "uploaded" + result.data.mediaIdString, Toast.LENGTH_SHORT).show();
+                //If successfully, create tweet with user text entry and mediaId of image previously uploaded.
+                EditText text = (EditText) findViewById(R.id.tweetTxt);
+                StatusesService statusesService = twitterApiClient.getStatusesService();
+                Call<Tweet> tweetCall = statusesService.update(text.getText().toString(), null, false, null, null, null, false, false, result.data.mediaIdString);
+                tweetCall.enqueue(new Callback<Tweet>() {
+                    @Override
+                    public void success(Result<Tweet> result) {
+                        //Do something with result
+                        Toast.makeText(TweetActivity.this, "Tweeted", Toast.LENGTH_SHORT).show();
+                    }
+
+                    public void failure(TwitterException exception) {
+                        //Do something on failure
+                        Toast.makeText(TweetActivity.this, "Not Tweeted", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
 
+            @Override
             public void failure(TwitterException exception) {
-                //Do something on failure
-                Toast.makeText(TweetActivity.this, "Not Tweeted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(TweetActivity.this, "not uploaded" + exception, Toast.LENGTH_SHORT).show();
             }
         });
     }
-
 }
