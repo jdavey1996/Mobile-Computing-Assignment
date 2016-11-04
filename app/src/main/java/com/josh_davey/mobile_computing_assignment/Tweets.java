@@ -4,8 +4,6 @@ package com.josh_davey.mobile_computing_assignment;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.view.View;
-import android.webkit.CookieManager;
 import android.widget.Toast;
 
 import com.twitter.sdk.android.core.Result;
@@ -27,6 +25,18 @@ public class Tweets {
         this.ctx = ctx;
         this.activity = activity;
         this.mTwitterAuthClient = mTwitterAuthClient;
+    }
+
+    public void checkActiveSession()
+    {
+        //If there's no active session, authorise and initiate callback for authorisation.
+        if (TwitterCore.getInstance().getSessionManager().getActiveSession() == null) {
+            loginTwitter();
+        }
+        else
+        {
+            createTweet();
+        }
     }
 
     public void loginTwitter()
