@@ -2,55 +2,72 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="1">
+    android:background="#ffffff"
+    android:weightSum="1"
+    android:layout_margin="10dp"
+    android:padding="10dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="TweetActivity"
-        android:id="@+id/textView" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="logout"
-        android:id="@+id/logoutBtn"
-        android:onClick="logoutTwitter" />
-
-    <EditText
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tweetTxt" />
-
-    <Button
-        android:layout_width="wrap_content"
+        android:id="@+id/inputLayout">
+    <EditText
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Tweet test"
-        android:id="@+id/button"
-        android:nestedScrollingEnabled="true"
-        android:onClick="tweetStatusTest"
-        android:layout_gravity="center_horizontal" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="tweet"
-        android:id="@+id/tweetBtn"
-        android:nestedScrollingEnabled="true"
-        android:onClick="startTwitter" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Take picture"
-        android:id="@+id/takePic"
-        android:onClick="dispatchTakePictureIntent"
-        android:nestedScrollingEnabled="true" />
-
+        android:layout_weight="1"
+        android:inputType="textMultiLine"
+        android:padding="5dp"
+        android:id="@+id/tweetInput"
+        android:maxLength="140"
+        android:lines="4"
+        android:background="#eeeeee"
+        android:hint="Type something to tweet..." />
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageTest" />
+        android:id="@+id/tweetInputClearBtn"
+        android:layout_width="30dp"
+        android:layout_height="match_parent"
+        android:paddingEnd="10dp"
+        android:layout_gravity="center_vertical"
+        android:background="#eeeeee"
+        android:src="@drawable/ic_close_black_24dp"
+        android:onClick="clearInput" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/captureImg"
+            android:onClick="captureImg"
+            android:src="@drawable/ic_photo_camera_black_36dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="No image added"
+            android:paddingLeft="3dp"
+            android:id="@+id/captureImgStatus"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/captureImg"
+            android:onClick="clearImage"
+            android:clickable="false" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="2dp"
+            android:paddingRight="2dp"
+            android:id="@+id/tweetBtn"
+            android:text="tweet"
+            android:src="@drawable/tw__composer_logo_blue"
+            android:onClick="startTwitter"
+            android:layout_alignParentEnd="true" />
+
+
+    </RelativeLayout>
+
 
 </LinearLayout>

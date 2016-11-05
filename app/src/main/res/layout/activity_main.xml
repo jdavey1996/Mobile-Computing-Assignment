@@ -3,14 +3,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.josh_davey.mobile_computing_assignment.MainActivity">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:titleTextColor="#ffffff"
+        app:title="Mobile Computing App"/>
 
     <android.support.design.widget.TabLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top"
+        android:layout_height="48dp"
+        android:layout_below="@id/toolbar"
         android:id="@+id/tabLayout"
-        android:background="#666666"/>
+        android:background="#36474F"
+        app:tabIndicatorColor="#ffffff"
+        app:tabSelectedTextColor="#ffffff"/>
 
     <android.support.v4.view.ViewPager
         android:layout_width="match_parent"

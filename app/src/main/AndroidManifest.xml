@@ -19,7 +19,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TweetActivity">
+        <activity android:name=".TweetActivity" android:theme="@style/TwitterDialog">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
