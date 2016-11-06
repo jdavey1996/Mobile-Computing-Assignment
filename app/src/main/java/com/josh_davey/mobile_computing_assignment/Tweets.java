@@ -29,7 +29,7 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 
 ////http://stackoverflow.com/questions/27267809/using-custom-login-button-with-twitter-fabric
-//*****************8https://docs.fabric.io/android/twitter/compose-tweets.html#results*** USED FOR ALL TWITTER STUFF
+//https://futurestud.io/tutorials/retrofit-synchronous-and-asynchronous-requests
 public class Tweets {
     Context ctx;
     Activity activity;
@@ -89,6 +89,7 @@ public class Tweets {
         });
     }
 
+    //http://stackoverflow.com/questions/31785698/android-adding-image-to-tweet-using-fabric-twitter-rest-api-and-retrofit
     public void uploadMedia(Uri uri) {
         //Get apiclient instance that's authenticated already.
         twitterApiClient = TwitterCore.getInstance().getApiClient();
@@ -117,14 +118,13 @@ public class Tweets {
 
     }
 
-
+    /*Send tweet to twitter account using the current authenticated user session. This is called via the Retrofit api,
+      therefore this doesn't need to be within an asynctask as the call itself runs asynchonously.*/
     public void sendTweet(String mediaIdString)
     {
-        /*****THIS METHOD IS STILL BEING TESTED - uploads captured image and if successful, tweets it.*/
         //https://docs.fabric.io/android/twitter/access-rest-api.html
-        //http://stackoverflow.com/questions/31785698/android-adding-image-to-tweet-using-fabric-twitter-rest-api-and-retrofit
-        //*************https://dev.twitter.com/rest/reference/post/statuses/update CHECK THIS OUT....*******
-        //Used for request body initialising Retroyfit 2.0- http://stackoverflow.com/questions/34562950/post-multipart-form-data-using-retrofit-2-0-including-image
+        //https://dev.twitter.com/rest/reference/post/statuses/update
+        //Used for request body initialising Retrofit 2.0- http://stackoverflow.com/questions/34562950/post-multipart-form-data-using-retrofit-2-0-including-image
         twitterApiClient = TwitterCore.getInstance().getApiClient();
         StatusesService statusesService = twitterApiClient.getStatusesService();
         Call<Tweet> tweetCall = statusesService.update(tweetInput.getText().toString(), null, false, null, null, null, false, false, mediaIdString);

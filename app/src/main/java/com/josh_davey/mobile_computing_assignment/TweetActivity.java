@@ -68,28 +68,24 @@ public class TweetActivity extends Activity {
         captureImgStatus.setClickable(false);
     }
 
-    public void startTwitter(View view)
-    {
+    public void startTwitter(View view) {
         mTwitterAuthClient = new TwitterAuthClient();
-        Tweets twitter = new Tweets(this,this,mTwitterAuthClient,savedImageUri,tweetInput);
+        Tweets twitter = new Tweets(this, this, mTwitterAuthClient, savedImageUri, tweetInput);
         twitter.checkActiveSession();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int responseCode, Intent intent) {
         //http://stackoverflow.com/questions/30455513/twitter-sdk-requestcode
-        if(requestCode == TwitterAuthConfig.DEFAULT_AUTH_REQUEST_CODE) {
+        if (requestCode == TwitterAuthConfig.DEFAULT_AUTH_REQUEST_CODE) {
             mTwitterAuthClient.onActivityResult(requestCode, responseCode, intent);
-        }
-        else if(requestCode == 1) {
-            if(responseCode == RESULT_OK) {
+        } else if (requestCode == 1) {
+            if (responseCode == RESULT_OK) {
                 Toast.makeText(TweetActivity.this, "saved image", Toast.LENGTH_SHORT).show();
                 captureImgStatus.setText("Image added - click to remove");
                 captureImgStatus.setClickable(true);
 
-            }
-            else
-            {
+            } else {
                 //Error saving captured image.
                 //Removed the saved uri - image didn't get saved.
                 savedImageUri = null;
@@ -100,7 +96,7 @@ public class TweetActivity extends Activity {
 
     //Take photo intent - https://developer.android.com/training/camera/photobasics.html.
     public void captureImg(View view) {
-        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
 
@@ -114,20 +110,15 @@ public class TweetActivity extends Activity {
 
                 savedImageUri = Uri.fromFile(newFile);
 
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,savedImageUri);
-                startActivityForResult(takePictureIntent,1);
-            }
-            else
-            {
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, savedImageUri);
+                startActivityForResult(takePictureIntent, 1);
+            } else {
                 Toast.makeText(TweetActivity.this, "Unable to take photo", Toast.LENGTH_SHORT).show();
             }
-        }
-        else
-        {
-            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
         }
     }
-
 
 
     @Override
@@ -136,26 +127,22 @@ public class TweetActivity extends Activity {
             case 0:
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                     captureImg(null);
-                }
-                else
-                {
+                } else {
                     //If permission is not granted, error message is displayed.
-                    Toast.makeText(this, "Permissions disabled.", Toast.LENGTH_SHORT).show();;
+                    Toast.makeText(this, "Permissions disabled.", Toast.LENGTH_SHORT).show();
+                    ;
                 }
         }
     }
 
     //Used to clear tweet input edittext when 'x' to the right of it is pressed
-    public void clearInput(View view)
-    {
+    public void clearInput(View view) {
         tweetInput.setText("");
     }
 
     //Clears the saved image uri varaible when the remove text is pressed. This prevents the captured image from being tweeted.
-    public void clearImage(View view)
-    {
-        if (captureImgStatus.getText().toString() == "Image added - click to remove")
-        {
+    public void clearImage(View view) {
+        if (captureImgStatus.getText().toString() == "Image added - click to remove") {
             //Removing uri from varaible so no is attached to the tweet.
             savedImageUri = null;
             //Setting captureImgStatus text.
@@ -164,18 +151,5 @@ public class TweetActivity extends Activity {
             captureImgStatus.setClickable(false);
         }
     }
-
-
-
-    /*ADD THIS METHOD ELSEWHERE - Possibly toolbar
-    //Clears session, logs user out and removes all cookies - removes traces of user login left.
-    public void logoutTwitter(View view)
-    {
-        TwitterCore.getInstance().getSessionManager().clearActiveSession();
-        TwitterCore.getInstance().logOut();
-        //http://stackoverflow.com/questions/29743676/how-to-logout-from-twitter-using-fabric-sdk-for-android
-        CookieManager.getInstance().removeAllCookies(null);
-        CookieManager.getInstance().flush();
-    }*/
 
 }
