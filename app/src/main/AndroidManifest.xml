@@ -12,14 +12,18 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+
+        <!--Retains instance when changing orientation - https://developer.android.com/guide/topics/resources/runtime-changes.html-->
+        <activity android:name=".MainActivity" android:configChanges="orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TweetActivity" android:theme="@style/TwitterDialog">
+        <activity android:name=".TweetActivity"
+                    android:theme="@style/TweetActivityTheme"
+                    android:configChanges="orientation|screenSize">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

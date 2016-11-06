@@ -8,13 +8,19 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!--Theme for TweetActivity, linked in the manifest.-->
     <!--http://stackoverflow.com/questions/16007750/how-to-create-custom-popupwindow-from-intent-call-->
-    <style name="TwitterDialog" parent="android:style/Theme.Dialog">
+    <style name="TweetActivityTheme" parent="android:style/Theme.Dialog">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <!--Theme for progress dialog. https://developer.android.com/guide/topics/ui/themes.html-->
+    <style name="ProgressDialogTheme" parent="android:Theme.Material.Dialog">
         <item name="android:backgroundDimEnabled">true</item>
     </style>
 

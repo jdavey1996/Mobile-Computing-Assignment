@@ -2,6 +2,7 @@ package com.josh_davey.mobile_computing_assignment;
 
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -30,6 +31,7 @@ import retrofit2.Call;
 
 ////http://stackoverflow.com/questions/27267809/using-custom-login-button-with-twitter-fabric
 //https://futurestud.io/tutorials/retrofit-synchronous-and-asynchronous-requests
+//http://stackoverflow.com/questions/28075136/how-can-i-use-retrofit-library-with-progressbar - Progress dialogs.
 public class Tweets {
     Context ctx;
     Activity activity;
@@ -100,6 +102,14 @@ public class Tweets {
         //Create request body with image to upload.
         RequestBody file = RequestBody.create(MediaType.parse("image/*"), photo);
 
+        final ProgressDialog uploadImgDialog = new ProgressDialog(ctx,R.style.ProgressDialogTheme);
+        uploadImgDialog.setIndeterminate(true);
+        uploadImgDialog.setCancelable(false);
+        uploadImgDialog.setCanceledOnTouchOutside(false);
+        uploadImgDialog.setTitle("Tweeting..");
+        uploadImgDialog.setMessage("Uploading image...");
+        uploadImgDialog.show();
+
         //Upload image, request callback.
         MediaService ms = twitterApiClient.getMediaService();
         Call<Media> uploadImgCall = ms.upload(file, null, null);
@@ -108,35 +118,44 @@ public class Tweets {
             public void success(Result<Media> result) {
                 Toast.makeText(ctx, "Image uploaded" + result.data.mediaIdString, Toast.LENGTH_SHORT).show();
                 sendTweet(result.data.mediaIdString);
+                uploadImgDialog.dismiss();
             }
             @Override
             public void failure(TwitterException exception) {
                 Toast.makeText(ctx, "Image not uploaded" + exception, Toast.LENGTH_SHORT).show();
+                uploadImgDialog.dismiss();
             }
         });
-
-
     }
 
     /*Send tweet to twitter account using the current authenticated user session. This is called via the Retrofit api,
       therefore this doesn't need to be within an asynctask as the call itself runs asynchonously.*/
+    //https://docs.fabric.io/android/twitter/access-rest-api.html
+    //https://dev.twitter.com/rest/reference/post/statuses/update
+    //Used for request body initialising Retrofit 2.0- http://stackoverflow.com/questions/34562950/post-multipart-form-data-using-retrofit-2-0-including-image
     public void sendTweet(String mediaIdString)
     {
-        //https://docs.fabric.io/android/twitter/access-rest-api.html
-        //https://dev.twitter.com/rest/reference/post/statuses/update
-        //Used for request body initialising Retrofit 2.0- http://stackoverflow.com/questions/34562950/post-multipart-form-data-using-retrofit-2-0-including-image
+
+        final ProgressDialog tweetingDialog = new ProgressDialog(ctx,R.style.ProgressDialogTheme);
+        tweetingDialog.setIndeterminate(true);
+        tweetingDialog.setCancelable(false);
+        tweetingDialog.setCanceledOnTouchOutside(false);
+        tweetingDialog.setTitle("Tweeting..");
+        tweetingDialog.setMessage("Sending tweet...");
+        tweetingDialog.show();
+
         twitterApiClient = TwitterCore.getInstance().getApiClient();
         StatusesService statusesService = twitterApiClient.getStatusesService();
         Call<Tweet> tweetCall = statusesService.update(tweetInput.getText().toString(), null, false, null, null, null, false, false, mediaIdString);
         tweetCall.enqueue(new Callback<Tweet>() {
             @Override
             public void success(Result<Tweet> result) {
-                //Do something with result
+                tweetingDialog.dismiss();
                 Toast.makeText(ctx, "Tweeted", Toast.LENGTH_SHORT).show();
                 activity.finish();
             }
             public void failure(TwitterException exception) {
-                //Do something on failure
+                tweetingDialog.dismiss();
                 Toast.makeText(ctx, "Not Tweeted", Toast.LENGTH_SHORT).show();
             }
         });
