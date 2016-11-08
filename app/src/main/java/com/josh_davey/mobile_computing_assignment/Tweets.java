@@ -73,7 +73,6 @@ public class Tweets {
 
             @Override
             public void success(Result<TwitterSession> twitterSessionResult) {
-                Toast.makeText(ctx, twitterSessionResult.data.getUserName(), Toast.LENGTH_SHORT).show();
                 if(savedImageUri == null) {
                     sendTweet(null);
                 }

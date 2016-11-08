@@ -4,6 +4,7 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-feature android:name="android.hardware.camera" android:required="true" />
 
     <application
@@ -33,14 +34,10 @@
             android:name="io.fabric.ApiKey"
             android:value="dee582ed2412e34b4a5dbcbcdadab4c2a1f6358e" />
 
-        <receiver
-            android:name=".TweetResultReceiver"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.twitter.sdk.android.tweetcomposer.UPLOAD_SUCCESS"/>
-                <action android:name="com.twitter.sdk.android.tweetcomposer.UPLOAD_FAILURE"/>
-            </intent-filter>
-        </receiver>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAK_v4cqdSV3uaFiFTBNnv7AfrPgtV3gmI"/>
+
     </application>
 
 </manifest>

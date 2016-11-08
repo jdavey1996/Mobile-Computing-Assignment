@@ -125,12 +125,11 @@ public class TweetActivity extends Activity {
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
             case 0:
-                if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     captureImg(null);
                 } else {
                     //If permission is not granted, error message is displayed.
-                    Toast.makeText(this, "Permissions disabled.", Toast.LENGTH_SHORT).show();
-                    ;
+                    Toast.makeText(this, "WRITE_EXTERNAL_STORAGE permission is disabled. Please grant this permission to add images to tweets.", Toast.LENGTH_SHORT).show();
                 }
         }
     }

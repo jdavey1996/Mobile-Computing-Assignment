@@ -19,8 +19,8 @@ import io.fabric.sdk.android.Fabric;
 public class MainActivity extends AppCompatActivity {
 
     // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
-    private static final String TWITTER_KEY = "AGJs3O0Ne7K8R7DGJhtcJAkM6";
-    private static final String TWITTER_SECRET = "t1WlLJ1d9USmf4UEDS0qfgm4TsxcUkGWUD522xkHN64gdwg3OO";
+    private static final String TWITTER_KEY = "IBzqCFJ6tTHZHHBF5PSsd7LsU";
+    private static final String TWITTER_SECRET = "KzDQs98rknhe3eYSLcm9hVI8BVH1PoT8inPMQi2EmCQNPh684D";
 
 //REFERENCES:
     //1 - https://developer.android.com/training/implementing-navigation/lateral.html
