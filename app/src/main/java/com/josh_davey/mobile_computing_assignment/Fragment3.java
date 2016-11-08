@@ -1,7 +1,10 @@
 package com.josh_davey.mobile_computing_assignment;
 
 import android.Manifest;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -10,6 +13,9 @@ import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -84,13 +90,20 @@ public class Fragment3 extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
 
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            googleMap.setMyLocationEnabled(true);
-        }
-            LatLng lincoln = new LatLng(53.2307, -0.5406);
-            googleMap.addMarker(new MarkerOptions().position(lincoln).title("Lincoln"));
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(lincoln));
 
+            googleMap.setMyLocationEnabled(true);
+
+            //http://www.materialdoc.com/linear-progress/
+            ProgressBar locationMarkersProgress = (ProgressBar)getView().findViewById(R.id.locationMarkersProgress);
+            locationMarkersProgress.setVisibility(View.VISIBLE);
+
+            TextView locationMarkersProgressTxt = (TextView)getView().findViewById(R.id.locationMarkersProgressTxt);
+            locationMarkersProgressTxt.setVisibility(View.VISIBLE);
+
+            GooglePlacesAsync googlePlacesAsync = new GooglePlacesAsync(getContext(),getActivity(),googleMap);
+            googlePlacesAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
+    }
 
     @Override
     public void onResume() {

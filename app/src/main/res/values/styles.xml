@@ -24,4 +24,9 @@
         <item name="android:backgroundDimEnabled">true</item>
     </style>
 
+    <style name="LinearProgress" parent="Theme.AppCompat.Light">
+        <item name="colorAccent">#009688</item>
+        <item name="android:progressBackgroundTint">#B2DFDB</item>
+    </style>
+
 </resources>

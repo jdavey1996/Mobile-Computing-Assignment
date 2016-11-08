@@ -1,4 +1,29 @@
-<com.google.android.gms.maps.MapView android:id="@+id/mapview"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android" />
+<LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:animateLayoutChanges="true" >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Attempting to load supermarkets near you..."
+        android:id="@+id/locationMarkersProgressTxt"
+        android:layout_gravity="center_horizontal"/>
+
+    <ProgressBar
+        android:theme="@style/LinearProgress"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:id="@+id/locationMarkersProgress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:layout_margin="0dp"
+        android:padding="0dp"/>
+
+
+
+    <com.google.android.gms.maps.MapView android:id="@+id/mapview"
+        android:theme="@style/LinearProgress"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android" />
+</LinearLayout>
