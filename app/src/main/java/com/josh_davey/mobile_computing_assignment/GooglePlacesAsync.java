@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -54,11 +55,12 @@ public class GooglePlacesAsync extends AsyncTask<String,String,JSONArray>
             Uri uri = Uri.parse("https://maps.googleapis.com/maps/api/place/nearbysearch/json?")
                     .buildUpon()
                     .appendQueryParameter("location", latitude+","+longitude)
-                    .appendQueryParameter("radius", "2000") //~1.2 miles
+                    .appendQueryParameter("radius", "2000")
                     .appendQueryParameter("type", "grocery_or_supermarket")
                     .appendQueryParameter("key", "AIzaSyDS9PUfBF9KJnAxcIOE42oUEAGJZEgdti0").build();
 
             URL url = new URL(uri.toString());
+            Log.i("tata",uri.toString());
 
             JSONArray data = new JSONObject(httpConnection.httpGet(url)).getJSONArray("results");
 
@@ -79,13 +81,11 @@ public class GooglePlacesAsync extends AsyncTask<String,String,JSONArray>
 
     @Override
     protected void onPostExecute(JSONArray data) {
-        ProgressBar locationMarkersProgress = (ProgressBar)activity.findViewById(R.id.locationMarkersProgress);
-        TextView locationMarkersProgressTxt = (TextView)activity.findViewById(R.id.locationMarkersProgressTxt);
-
-
-        locationMarkersProgressTxt.setVisibility(View.GONE);
-        locationMarkersProgress.setVisibility(View.GONE);
-
+        //Disables visibility for a progressbar and accompanying text - data has finished loading.
+        ProgressBar placesProgress = (ProgressBar)activity.findViewById(R.id.placesProgress);
+        TextView placesProgressTxt = (TextView)activity.findViewById(R.id.placesProgressTxt);
+        placesProgressTxt.setVisibility(View.GONE);
+        placesProgress.setVisibility(View.GONE);
 
         if (data == null)
         {
@@ -95,18 +95,27 @@ public class GooglePlacesAsync extends AsyncTask<String,String,JSONArray>
             try {
                 if(data.length() >0) {
                     for (int i = 0; i < data.length(); i++) {
+                        //Create new marker.
+                        MarkerOptions marker = new MarkerOptions();
+
+                        //Get place title and set marker title.
                         String title = data.getJSONObject(i).getString("name");
+                        marker.title(title);
+
+                        //Get place location and set marker positioning.
                         String latitude = data.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getString("lat");
                         String longitude = data.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getString("lng");
-                        String openclosed = data.getJSONObject(i).getJSONObject("opening_hours").getString("open_now");
-
                         LatLng latlng = new LatLng(Double.valueOf(latitude), Double.valueOf(longitude));
-                        googleMap.addMarker(new MarkerOptions()
-                                .position(latlng)
-                                .title(title)
-                                .snippet("Open now: "+openclosed));
+                        marker.position(latlng);
 
-                        //googleMap.moveCamera(CameraUpdateFactory.newLatLng(lincoln));
+                        //Check if place has opening hours information recorded and add to marker snippet if so.
+                        if (data.getJSONObject(i).has("opening_hours")) {
+                            String openclosed = data.getJSONObject(i).getJSONObject("opening_hours").getString("open_now");
+                            marker.snippet("Open now: " + openclosed);
+                        }
+
+                        //Add marker to the map.
+                        googleMap.addMarker(marker);
                     }
                 }
                 else
@@ -116,8 +125,8 @@ public class GooglePlacesAsync extends AsyncTask<String,String,JSONArray>
             } catch (Exception e) {
                 //This would call if the string "name" couldn't be found in the downloaded data - would only occur if Google changed their JSON file structure.
                 Toast.makeText(ctx, "Unknown Google API error. Please try again later.", Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
             }
-
         }
     }
 

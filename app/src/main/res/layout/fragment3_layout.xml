@@ -6,13 +6,13 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Attempting to load supermarkets near you..."
-        android:id="@+id/locationMarkersProgressTxt"
+        android:id="@+id/placesProgressTxt"
         android:layout_gravity="center_horizontal"/>
 
     <ProgressBar
         android:theme="@style/LinearProgress"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:id="@+id/locationMarkersProgress"
+        android:id="@+id/placesProgress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:indeterminate="true"

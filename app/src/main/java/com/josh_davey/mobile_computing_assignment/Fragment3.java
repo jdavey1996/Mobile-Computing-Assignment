@@ -91,13 +91,22 @@ public class Fragment3 extends Fragment implements OnMapReadyCallback {
 
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
+            //Location for testing.
+            LatLng location = new LatLng(53.230688,-0.540579);
+
+            //Shows location on map.
             googleMap.setMyLocationEnabled(true);
 
-            //http://www.materialdoc.com/linear-progress/
-            ProgressBar locationMarkersProgress = (ProgressBar)getView().findViewById(R.id.locationMarkersProgress);
+            //Set map to show location and set zoom level.
+            googleMap.moveCamera(CameraUpdateFactory.newLatLng(location));
+            googleMap.animateCamera(CameraUpdateFactory.zoomTo(13));
+
+
+            //Enables visibility for a progressbar and accompanying text http://www.materialdoc.com/linear-progress/
+            ProgressBar locationMarkersProgress = (ProgressBar)getView().findViewById(R.id.placesProgress);
             locationMarkersProgress.setVisibility(View.VISIBLE);
 
-            TextView locationMarkersProgressTxt = (TextView)getView().findViewById(R.id.locationMarkersProgressTxt);
+            TextView locationMarkersProgressTxt = (TextView)getView().findViewById(R.id.placesProgressTxt);
             locationMarkersProgressTxt.setVisibility(View.VISIBLE);
 
             GooglePlacesAsync googlePlacesAsync = new GooglePlacesAsync(getContext(),getActivity(),googleMap);
