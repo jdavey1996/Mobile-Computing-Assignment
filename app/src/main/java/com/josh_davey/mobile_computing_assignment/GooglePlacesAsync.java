@@ -55,7 +55,7 @@ public class GooglePlacesAsync extends AsyncTask<String,String,JSONArray>
             Uri uri = Uri.parse("https://maps.googleapis.com/maps/api/place/nearbysearch/json?")
                     .buildUpon()
                     .appendQueryParameter("location", latitude+","+longitude)
-                    .appendQueryParameter("radius", "2000")
+                    .appendQueryParameter("radius", "4000")
                     .appendQueryParameter("type", "grocery_or_supermarket")
                     .appendQueryParameter("key", "AIzaSyDS9PUfBF9KJnAxcIOE42oUEAGJZEgdti0").build();
 
@@ -94,6 +94,8 @@ public class GooglePlacesAsync extends AsyncTask<String,String,JSONArray>
         else {
             try {
                 if(data.length() >0) {
+                    //Remove existing markers on the map.
+                    googleMap.clear();
                     for (int i = 0; i < data.length(); i++) {
                         //Create new marker.
                         MarkerOptions marker = new MarkerOptions();

@@ -40,7 +40,6 @@ public class Fragment3 extends Fragment implements OnMapReadyCallback {
         return view;
     }
 
-
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -58,11 +57,11 @@ public class Fragment3 extends Fragment implements OnMapReadyCallback {
             requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
             case 1:
-
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     startMap();
                 }
@@ -70,7 +69,6 @@ public class Fragment3 extends Fragment implements OnMapReadyCallback {
                 {
                     Toast.makeText(getContext(), "Location permission not granted. Please grant this permission to view supermarkets nearby.", Toast.LENGTH_SHORT).show();
                 }
-        return;
         }
     }
 
@@ -88,29 +86,10 @@ public class Fragment3 extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-
-            //Location for testing.
-            LatLng location = new LatLng(53.230688,-0.540579);
-
-            //Shows location on map.
-            googleMap.setMyLocationEnabled(true);
-
-            //Set map to show location and set zoom level.
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(location));
-            googleMap.animateCamera(CameraUpdateFactory.zoomTo(13));
-
-
-            //Enables visibility for a progressbar and accompanying text http://www.materialdoc.com/linear-progress/
-            ProgressBar locationMarkersProgress = (ProgressBar)getView().findViewById(R.id.placesProgress);
-            locationMarkersProgress.setVisibility(View.VISIBLE);
-
-            TextView locationMarkersProgressTxt = (TextView)getView().findViewById(R.id.placesProgressTxt);
-            locationMarkersProgressTxt.setVisibility(View.VISIBLE);
-
-            GooglePlacesAsync googlePlacesAsync = new GooglePlacesAsync(getContext(),getActivity(),googleMap);
-            googlePlacesAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            //Start getting location.
+            GoogleLocation googleLocation = new GoogleLocation(getContext(),getActivity(),googleMap);
+            googleLocation.startLocation();
         }
     }
 
