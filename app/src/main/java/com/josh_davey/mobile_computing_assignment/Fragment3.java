@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +35,7 @@ import java.util.Map;
 //https://developers.google.com/android/reference/com/google/android/gms/maps/MapView
 public class Fragment3 extends Fragment implements OnMapReadyCallback {
     MapView mapView;
+    GoogleLocation googleLocation;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment3_layout,container,false);
@@ -48,14 +50,8 @@ public class Fragment3 extends Fragment implements OnMapReadyCallback {
         mapView = (MapView) view.findViewById(R.id.mapview);
         mapView.onCreate(savedInstanceState);
 
-        //Check for location permissions enabled.
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            startMap();
-        }
-        else
-        {
-            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-        }
+        startMap();
+
     }
 
     @Override
@@ -63,7 +59,9 @@ public class Fragment3 extends Fragment implements OnMapReadyCallback {
         switch (requestCode) {
             case 1:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    startMap();
+                    Toast.makeText(getContext(), "permission granted", Toast.LENGTH_SHORT).show();
+                    Button b = (Button)getActivity().findViewById(R.id.getNearbyBtn);
+                    b.performClick();
                 }
                 else
                 {
@@ -72,10 +70,10 @@ public class Fragment3 extends Fragment implements OnMapReadyCallback {
         }
     }
 
-
     public void startMap()
     {
         GooglePlayServices googlePlayServices = new GooglePlayServices(getContext(), getActivity());
+        //If google play services is available, load map.
         if (googlePlayServices.checkAvailable()) {
             mapView.getMapAsync(this);
         } else {
@@ -86,11 +84,36 @@ public class Fragment3 extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            //Start getting location.
-            GoogleLocation googleLocation = new GoogleLocation(getContext(),getActivity(),googleMap);
-            googleLocation.startLocation();
-        }
+        googleLocation = new GoogleLocation(getContext(),getActivity(),googleMap);
+
+        Button btn = (Button)getActivity().findViewById(R.id.getNearbyBtn);
+        btn.setVisibility(View.VISIBLE);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    //Check if the location listener is already on - if true, toast to tell user.
+                    if(googleLocation.requestingLocation)
+                    {
+                        Toast.makeText(getContext(), "We're still trying to get your location, please wait.", Toast.LENGTH_SHORT).show();
+                    }
+                    //Check if places are being downloaded still - if true, toast to tell user.
+                    else if (googleLocation.googlePlacesAsync != null && googleLocation.googlePlacesAsync.getStatus() == AsyncTask.Status.RUNNING)
+                    {
+                        Toast.makeText(getContext(), "We're still trying to download places, please wait.", Toast.LENGTH_SHORT).show();
+                    }
+                    //Start location listening to get current location and get places.
+                    else
+                    {
+                        googleLocation.startLocation();
+                    }
+                }
+                else
+                {
+                    requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+                }
+            }
+        });
     }
 
     @Override
@@ -99,18 +122,21 @@ public class Fragment3 extends Fragment implements OnMapReadyCallback {
         mapView.onResume();
     }
 
-
     @Override
     public void onPause() {
         super.onPause();
-     mapView.onPause();
+        mapView.onPause();
     }
-
 
     @Override
     public void onStop() {
         super.onStop();
-       mapView.onStop();
+        mapView.onStop();
+        //Checking if the app is still listening for location updates, stopping them if true.
+        if(googleLocation != null && googleLocation.requestingLocation)
+        {
+            googleLocation.stopLocationUpdates();
+        }
     }
 
     @Override

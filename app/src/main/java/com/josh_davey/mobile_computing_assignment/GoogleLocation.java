@@ -30,8 +30,10 @@ public class GoogleLocation implements GoogleApiClient.ConnectionCallbacks, Goog
     Context ctx;
     GoogleApiClient googleApiClient;
     LocationRequest locationRequest;
+    Boolean requestingLocation= false;
     Activity activity;
     GoogleMap googleMap;
+    GooglePlacesAsync googlePlacesAsync;
 
     public GoogleLocation(Context ctx, Activity activity, GoogleMap googleMap)
     {
@@ -67,8 +69,8 @@ public class GoogleLocation implements GoogleApiClient.ConnectionCallbacks, Goog
 
     protected void createLocationRequest() {
         locationRequest = new LocationRequest();
-        locationRequest.setInterval(30000);
-        locationRequest.setFastestInterval(30000);
+        locationRequest.setInterval(100);
+        locationRequest.setFastestInterval(100);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
@@ -76,6 +78,8 @@ public class GoogleLocation implements GoogleApiClient.ConnectionCallbacks, Goog
     {
         if (ContextCompat.checkSelfPermission(ctx, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
+            requestingLocation = true;
+            Toast.makeText(ctx, "Attempting to find your location...", Toast.LENGTH_SHORT).show();
         }
         else {
             //Requesting permission to access device location.
@@ -90,6 +94,7 @@ public class GoogleLocation implements GoogleApiClient.ConnectionCallbacks, Goog
         {
             LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
             googleApiClient.disconnect();
+            requestingLocation = false;
         }
     }
 
@@ -107,22 +112,16 @@ public class GoogleLocation implements GoogleApiClient.ConnectionCallbacks, Goog
 
     @Override
     public void onLocationChanged(Location location) {
-        Toast.makeText(ctx, location.getLatitude()+", "+location.getLongitude(), Toast.LENGTH_SHORT).show();
         if (ActivityCompat.checkSelfPermission(ctx, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            //Stop location updates, location has been acquired.
+            stopLocationUpdates();
             //Shows location on map.
             googleMap.setMyLocationEnabled(true);
             //Set map to show location and set zoom level.
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(),location.getLongitude()),13));
-
-            //Get places near location once location has changed.
-            GooglePlacesAsync googlePlacesAsync = new GooglePlacesAsync(ctx,activity,googleMap);
-            googlePlacesAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-
-            //Enables visibility for a progressbar and accompanying text http://www.materialdoc.com/linear-progress/
-            ProgressBar locationMarkersProgress = (ProgressBar)activity.findViewById(R.id.placesProgress);
-            locationMarkersProgress.setVisibility(View.VISIBLE);
-            TextView locationMarkersProgressTxt = (TextView)activity.findViewById(R.id.placesProgressTxt);
-            locationMarkersProgressTxt.setVisibility(View.VISIBLE);
+            //Get places near location once location has been found.
+            googlePlacesAsync = new GooglePlacesAsync(ctx,activity,googleMap);
+            googlePlacesAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,location.getLatitude(),location.getLongitude());
         }
     }
 

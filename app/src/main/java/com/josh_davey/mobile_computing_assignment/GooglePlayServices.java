@@ -28,7 +28,6 @@ public class GooglePlayServices {
         int availability = googleApiAvailability.isGooglePlayServicesAvailable(ctx);
         if (availability == ConnectionResult.SUCCESS)
         {
-            Toast.makeText(ctx, "Available", Toast.LENGTH_SHORT).show();
             return true;
         }
         else

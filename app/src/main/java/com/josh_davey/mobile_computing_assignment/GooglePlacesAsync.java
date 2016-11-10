@@ -24,7 +24,7 @@ import java.net.URL;
 
 //https://developers.google.com/places/web-service/search
 //https://developers.google.com/places/web-service/supported_types
-public class GooglePlacesAsync extends AsyncTask<String,String,JSONArray>
+public class GooglePlacesAsync extends AsyncTask<Double,String,JSONArray>
 {
     //Variables.
     Context ctx;
@@ -40,17 +40,20 @@ public class GooglePlacesAsync extends AsyncTask<String,String,JSONArray>
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        Toast.makeText(ctx, "GPA startd", Toast.LENGTH_SHORT).show();
+        Toast.makeText(ctx, "Location acquired, attempting to find nearby supermarkets.", Toast.LENGTH_SHORT).show();
+        //Enables visibility for a progressbar and accompanying text http://www.materialdoc.com/linear-progress/
+        ProgressBar locationMarkersProgress = (ProgressBar)activity.findViewById(R.id.placesProgress);
+        locationMarkersProgress.setVisibility(View.VISIBLE);
     }
 
 
     @Override
-    protected JSONArray doInBackground(String... params) {
-        String latitude = "53.230688";
-        String longitude = "-0.540579";
+    protected JSONArray doInBackground(Double... params) {
+        Double latitude = params[0];
+        Double longitude = params[1];
         try {
             HttpConnection httpConnection = new HttpConnection();
-            Thread.sleep(10000);
+            //Thread.sleep(10000);
             //http://stackoverflow.com/questions/19167954/use-uri-builder-in-android-or-create-url-with-variables
             Uri uri = Uri.parse("https://maps.googleapis.com/maps/api/place/nearbysearch/json?")
                     .buildUpon()
@@ -60,7 +63,6 @@ public class GooglePlacesAsync extends AsyncTask<String,String,JSONArray>
                     .appendQueryParameter("key", "AIzaSyDS9PUfBF9KJnAxcIOE42oUEAGJZEgdti0").build();
 
             URL url = new URL(uri.toString());
-            Log.i("tata",uri.toString());
 
             JSONArray data = new JSONObject(httpConnection.httpGet(url)).getJSONArray("results");
 
@@ -70,7 +72,6 @@ public class GooglePlacesAsync extends AsyncTask<String,String,JSONArray>
             e.printStackTrace();
             return null;
         }
-
     }
 
     @Override
@@ -83,8 +84,6 @@ public class GooglePlacesAsync extends AsyncTask<String,String,JSONArray>
     protected void onPostExecute(JSONArray data) {
         //Disables visibility for a progressbar and accompanying text - data has finished loading.
         ProgressBar placesProgress = (ProgressBar)activity.findViewById(R.id.placesProgress);
-        TextView placesProgressTxt = (TextView)activity.findViewById(R.id.placesProgressTxt);
-        placesProgressTxt.setVisibility(View.GONE);
         placesProgress.setVisibility(View.GONE);
 
         if (data == null)
