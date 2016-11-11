@@ -1,18 +1,44 @@
 package com.josh_davey.mobile_computing_assignment;
 
+import android.util.Log;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+
+import retrofit2.http.Url;
 
 //Ref lecture slides
 public class HttpConnection {
-    public String httpGet(URL url)
+    HttpURLConnection connection;
+
+    public HttpConnection(URL url)
     {
         try {
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection = (HttpURLConnection) url.openConnection();
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public void addHeader(String param1, String param2)
+    {
+        try {
+            connection.setRequestProperty(param1, param2);
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public String httpGet()
+    {
+        try {
             connection.setRequestMethod("GET");
             connection.setConnectTimeout(30000);
             connection.setReadTimeout(30000);
@@ -31,7 +57,11 @@ public class HttpConnection {
             String result = stringBuilder.toString();
             return result;
         }catch (Exception e) {
+
+            e.printStackTrace();
             return  null;
         }
     }
+
+
 }

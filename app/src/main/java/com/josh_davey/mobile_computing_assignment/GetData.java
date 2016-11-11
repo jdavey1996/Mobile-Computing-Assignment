@@ -45,29 +45,30 @@ public class GetData extends AsyncTask<String,String,JSONArray>{
 
         try {
             publishProgress();
-            HttpConnection httpConnection = new HttpConnection();
 
             //http://stackoverflow.com/questions/19167954/use-uri-builder-in-android-or-create-url-with-variables
-            Uri uri = Uri.parse("https://api.themoviedb.org/3/search/movie")
+            Uri uri = Uri.parse("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/findByIngredients?fillIngredients=false")
                     .buildUpon()
-                    .appendQueryParameter("api_key", "7b0de9fe7070866e986294d27c2960db")
-                    .appendQueryParameter("language", "en-US")
-                    .appendQueryParameter("query", "fight")
-                    .appendQueryParameter("page", "1").build();
-            Log.i("uri", uri.toString());
+                    .appendQueryParameter("ingredients", "apples,flour,sugar")
+                    .appendQueryParameter("limitLicense", "false")
+                    .appendQueryParameter("number", "20")
+                    .appendQueryParameter("ranking", "1")
+                    .build();
 
             URL url = new URL(uri.toString());
 
-            JSONArray data = new JSONObject(httpConnection.httpGet(url)).getJSONArray("results");
+            HttpConnection httpConnection = new HttpConnection(url);
+            httpConnection.addHeader("X-Mashape-Key", "1q0nIfwEzpmshsRYUrOjcTOg1u07p13tuq7jsn0HSdAdoMC7p2");
+            httpConnection.addHeader("Accept", "application/json");
+
+
+           JSONArray data = new JSONArray(httpConnection.httpGet());
 
             return data;
         }catch (Exception e)
         {
             return null;
         }
-
-
-
     }
 
     @Override
@@ -87,7 +88,7 @@ public class GetData extends AsyncTask<String,String,JSONArray>{
         else {
             try {
                 for (int i = 0; i < result.length(); i++) {
-                    Log.i("Downloaded data", result.getJSONObject(i).getString("original_title"));
+                    Log.i("Downloaded data", result.getJSONObject(i).getString("title"));
                 }
                 // Toast.makeText(ctx, result, Toast.LENGTH_SHORT).show();
             } catch (Exception e) {

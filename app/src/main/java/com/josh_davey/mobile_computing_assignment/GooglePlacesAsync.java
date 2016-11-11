@@ -52,7 +52,7 @@ public class GooglePlacesAsync extends AsyncTask<Double,String,JSONArray>
         Double latitude = params[0];
         Double longitude = params[1];
         try {
-            HttpConnection httpConnection = new HttpConnection();
+
             //Thread.sleep(10000);
             //http://stackoverflow.com/questions/19167954/use-uri-builder-in-android-or-create-url-with-variables
             Uri uri = Uri.parse("https://maps.googleapis.com/maps/api/place/nearbysearch/json?")
@@ -60,11 +60,12 @@ public class GooglePlacesAsync extends AsyncTask<Double,String,JSONArray>
                     .appendQueryParameter("location", latitude+","+longitude)
                     .appendQueryParameter("radius", "4000")
                     .appendQueryParameter("type", "grocery_or_supermarket")
-                    .appendQueryParameter("key", "AIzaSyDS9PUfBF9KJnAxcIOE42oUEAGJZEgdti0").build();
+                    .appendQueryParameter("key", "AIzaSyDS9PUfBF9KJnAxcIOE42oUEAGJZEgdti0")
+                    .build();
 
             URL url = new URL(uri.toString());
-
-            JSONArray data = new JSONObject(httpConnection.httpGet(url)).getJSONArray("results");
+            HttpConnection httpConnection = new HttpConnection(url);
+            JSONArray data = new JSONObject(httpConnection.httpGet()).getJSONArray("results");
 
             return data;
         }catch (Exception e)
