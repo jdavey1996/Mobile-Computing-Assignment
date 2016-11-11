@@ -45,9 +45,9 @@ public class MainActivity extends AppCompatActivity {
 
         //Add tabs to the tab layout - See ref 2.
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
-        tabLayout.addTab(tabLayout.newTab().setText("Tab 1"));
-        tabLayout.addTab(tabLayout.newTab().setText("Tab 2"));
-        tabLayout.addTab(tabLayout.newTab().setText("Tab 3"));
+        tabLayout.addTab(tabLayout.newTab().setText("Recipe search"));
+        tabLayout.addTab(tabLayout.newTab().setText("Saved recipes"));
+        tabLayout.addTab(tabLayout.newTab().setText("Local supermarkets"));
         //Ensures the tabs stretch to fill the layout container.
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 

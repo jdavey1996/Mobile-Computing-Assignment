@@ -1,5 +1,7 @@
 package com.josh_davey.mobile_computing_assignment;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import java.io.BufferedInputStream;
@@ -36,7 +38,7 @@ public class HttpConnection {
         }
     }
 
-    public String httpGet()
+    public String getTextData()
     {
         try {
             connection.setRequestMethod("GET");
@@ -48,9 +50,8 @@ public class HttpConnection {
 
             StringBuilder stringBuilder = new StringBuilder();
             String line;
-            while ((line = bufferedReader.readLine()) != null)
-            {
-                stringBuilder.append(line +"\n");
+            while ((line = bufferedReader.readLine()) != null) {
+                stringBuilder.append(line + "\n");
             }
             bufferedReader.close();
 
@@ -63,5 +64,21 @@ public class HttpConnection {
         }
     }
 
+    public Bitmap getImageData()
+    {
+        try {
+            connection.setRequestMethod("GET");
+            connection.setConnectTimeout(30000);
+            connection.setReadTimeout(30000);
+            connection.connect();
 
+            InputStream inputStream = connection.getInputStream();
+
+            Bitmap image = BitmapFactory.decodeStream(inputStream);
+            return image;
+        }catch (Exception e)
+        {
+            return null;
+        }
+    }
 }

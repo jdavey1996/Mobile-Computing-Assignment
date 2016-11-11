@@ -65,7 +65,7 @@ public class GooglePlacesAsync extends AsyncTask<Double,String,JSONArray>
 
             URL url = new URL(uri.toString());
             HttpConnection httpConnection = new HttpConnection(url);
-            JSONArray data = new JSONObject(httpConnection.httpGet()).getJSONArray("results");
+            JSONArray data = new JSONObject(httpConnection.getTextData()).getJSONArray("results");
 
             return data;
         }catch (Exception e)

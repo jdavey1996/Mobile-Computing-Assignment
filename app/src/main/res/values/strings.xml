@@ -1,3 +1,30 @@
 <resources>
     <string name="app_name">Mobile-Computing-Assignment</string>
+
+    <string name="search_types_prompt">Select a type</string>
+    <string-array name="search_types_array">
+        <item>main course</item>
+        <item>side dish</item>
+        <item>dessert</item>
+        <item>breakfast</item>
+        <item>appetizer</item>
+        <item>salad</item>
+        <item>bread</item>
+        <item>sauce</item>
+        <item>soup</item>
+    </string-array>
+
+    <string name="search_amount_prompt">Select recipe amount</string>
+    <string-array name="search_amount_array">
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>20</item>
+        <item>25</item>
+        <item>30</item>
+        <item>35</item>
+        <item>40</item>
+        <item>45</item>
+        <item>50</item>
+    </string-array>
 </resources>

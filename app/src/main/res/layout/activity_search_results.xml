@@ -13,22 +13,15 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:titleTextColor="#ffffff"
         app:title="Mobile Computing App"/>
-
-    <android.support.design.widget.TabLayout
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
+    <ListView
+        android:layout_width="344dp"
+        android:layout_height="306dp"
+        android:id="@+id/searchResultsListView"
+        android:layout_gravity="center_horizontal"
+        android:choiceMode="singleChoice"
         android:layout_below="@id/toolbar"
-        android:id="@+id/tabLayout"
-        android:background="#C62828"
-        app:tabIndicatorColor="#ffffff"
-        app:tabSelectedTextColor="#ffffff"/>
-
-    <android.support.v4.view.ViewPager
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/viewPager"
-        android:layout_below="@id/tabLayout"/>
-
-
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>
