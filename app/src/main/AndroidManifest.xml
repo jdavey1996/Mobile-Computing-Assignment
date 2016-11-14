@@ -36,6 +36,13 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".RecipeActivity">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="dee582ed2412e34b4a5dbcbcdadab4c2a1f6358e" />

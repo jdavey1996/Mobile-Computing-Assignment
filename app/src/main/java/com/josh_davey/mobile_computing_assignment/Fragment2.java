@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class Fragment2 extends Fragment{
     //https://developer.android.com/guide/components/fragments.html
@@ -17,21 +18,8 @@ public class Fragment2 extends Fragment{
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        /*Button to load tweet activity. This will be placed on a button for each list item once data is in the app
-         to allow the user to tweet about each.*/
-        Button loadTweetActivity = (Button)view.findViewById(R.id.loadTweetActivity);
-        loadTweetActivity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(),TweetActivity.class);
-                getContext().startActivity(intent);
-            }
-        });
+    public void onStart() {
+        super.onStart();
+        //Populate fragment 2 list with data from sqlite db.- this will load whenever the MainActivity is returned to.
     }
-
-
-
 }

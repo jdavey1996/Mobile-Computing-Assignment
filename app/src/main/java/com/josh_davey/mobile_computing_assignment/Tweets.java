@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.View;
+import android.webkit.CookieManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -158,5 +159,22 @@ public class Tweets {
                 Toast.makeText(ctx, "Not Tweeted", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    //Clears session, logs user out and removes all cookies - removes traces of user login left.
+    public void unlinkTwitter()
+    {
+        if(TwitterCore.getInstance().getSessionManager().getActiveSession() != null) {
+            TwitterCore.getInstance().getSessionManager().clearActiveSession();
+            TwitterCore.getInstance().logOut();
+            //http://stackoverflow.com/questions/29743676/how-to-logout-from-twitter-using-fabric-sdk-for-android
+            CookieManager.getInstance().removeAllCookies(null);
+            CookieManager.getInstance().flush();
+            Toast.makeText(ctx, "Twitter has now been disconnected.", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            Toast.makeText(ctx, "No active twitter session currently exists.", Toast.LENGTH_SHORT).show();
+        }
     }
 }

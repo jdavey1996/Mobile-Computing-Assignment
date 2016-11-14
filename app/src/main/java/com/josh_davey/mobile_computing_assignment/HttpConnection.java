@@ -42,7 +42,7 @@ public class HttpConnection {
     {
         try {
             connection.setRequestMethod("GET");
-            connection.setConnectTimeout(30000);
+            connection.setConnectTimeout(10000);
             connection.setReadTimeout(30000);
             connection.connect();
 

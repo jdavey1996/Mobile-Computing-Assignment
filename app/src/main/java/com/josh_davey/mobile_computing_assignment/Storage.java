@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -48,6 +49,7 @@ public class Storage {
             image.compress(Bitmap.CompressFormat.JPEG, 100, out);
             out.flush();
             out.close();
+            Log.i("saved",f.getName());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -65,6 +67,40 @@ public class Storage {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public Boolean checkImgCached(Context ctx, String name)
+    {
+        File cacheDir = ctx.getCacheDir();
+        File f = new File(cacheDir, name);
+        if(f.exists())
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public Boolean clearImgCache(Context ctx)
+    {
+        //http://stackoverflow.com/questions/26986637/can-android-clear-files-from-the-cache-directory-of-my-application-while-it-is-r
+        try {
+            File[] directory = ctx.getCacheDir().listFiles();
+            if (directory != null) {
+                for (File file : directory) {
+                    if(file.getName().contains("full_size")|| file.getName().contains("thumbnail")) {
+                        file.delete();
+                        Log.i("deleted", file.getName());
+                    }
+                }
+            }
+            return true;
+        }catch (Exception e)
+        {
+            return false;
         }
     }
 }

@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">Mobile-Computing-Assignment</string>
 
-    <string name="search_types_prompt">Select a type</string>
     <string-array name="search_types_array">
         <item>main course</item>
         <item>side dish</item>
@@ -14,7 +13,6 @@
         <item>soup</item>
     </string-array>
 
-    <string name="search_amount_prompt">Select recipe amount</string>
     <string-array name="search_amount_array">
         <item>5</item>
         <item>10</item>

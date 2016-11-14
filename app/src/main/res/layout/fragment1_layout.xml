@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="50dp"
     android:padding="30dp"
     android:background="#ffffff">
 
@@ -19,7 +18,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/spinLayout">
+        android:id="@+id/spinLayout"
+        android:paddingLeft="5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Recipe type: "/>
 
         <Spinner
             android:layout_width="0dp"
@@ -29,20 +34,32 @@
             android:entries="@array/search_types_array"
             android:id="@+id/searchType"
             android:spinnerMode="dropdown"
-            android:prompt="@string/search_types_prompt"
             />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinLayout2"
+        android:paddingLeft="5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Amount of recipes: "/>
 
         <Spinner
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.6"
+            android:padding="10dp"
+            android:entries="@array/search_amount_array"
             android:id="@+id/searchAmount"
             android:spinnerMode="dropdown"
-            android:layout_weight="0.4"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:entries="@array/search_amount_array"
-       />
-    </LinearLayout>
+            />
 
-    <Button
+
+    </LinearLayout>
+<Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Get recipes"

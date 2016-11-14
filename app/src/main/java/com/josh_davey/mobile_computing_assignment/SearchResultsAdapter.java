@@ -2,6 +2,8 @@ package com.josh_davey.mobile_computing_assignment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +32,7 @@ public class SearchResultsAdapter extends ArrayAdapter<RecipeConstructor> {
         }
 
         //Get item at current position.
-        RecipeConstructor item = getItem(position);
+        final RecipeConstructor item = getItem(position);
 
         //Set recipeTitle TextView with data from arraylist.
         TextView recipeTitle = (TextView) view.findViewById(R.id.recipeTitle);
@@ -43,13 +45,20 @@ public class SearchResultsAdapter extends ArrayAdapter<RecipeConstructor> {
         //Set recipeThumbnail ImageVie the correct cached image based on the corresponding recipeId.
         ImageView recipeThumbnail = (ImageView)view.findViewById(R.id.recipeThumbnail);
         Storage getImage = new Storage();
-        recipeThumbnail.setImageBitmap(getImage.getTepImg(ctx,item.getId()));
+        recipeThumbnail.setImageBitmap(getImage.getTepImg(ctx,item.getId()+"_thumbnail"));
 
         //Onclick method for clicking a list item.
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(ctx, "Clicked", Toast.LENGTH_SHORT).show();
+
+                RecipeDetailAsync getRecipeDetail = new RecipeDetailAsync(activity,ctx);
+                if (getRecipeDetail.getStatus() != AsyncTask.Status.RUNNING) {
+                    //http://stackoverflow.com/questions/30618600/asynctask-takes-a-long-time-before-entering-doinbackground
+                    getRecipeDetail.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,item.getId(),item.getTitle(),item.getReadyInMinutes());
+                }else {
+                    Toast.makeText(getContext(), "running", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

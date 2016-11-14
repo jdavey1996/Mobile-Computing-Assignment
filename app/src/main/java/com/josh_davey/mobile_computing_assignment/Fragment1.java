@@ -3,6 +3,7 @@ package com.josh_davey.mobile_computing_assignment;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +37,7 @@ public class Fragment1 extends Fragment {
                 RecipesAsync searchRecipes = new RecipesAsync(getActivity(),getContext());
                 if (searchRecipes.getStatus() != AsyncTask.Status.RUNNING) {
                     //http://stackoverflow.com/questions/30618600/asynctask-takes-a-long-time-before-entering-doinbackground
-                    searchRecipes.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,null,query.getText().toString(),type.getSelectedItem().toString(),amount.getSelectedItem().toString());
+                    searchRecipes.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,query.getText().toString(),type.getSelectedItem().toString(),amount.getSelectedItem().toString());
                 }else {
                     Toast.makeText(getContext(), "running", Toast.LENGTH_SHORT).show();
                 }
