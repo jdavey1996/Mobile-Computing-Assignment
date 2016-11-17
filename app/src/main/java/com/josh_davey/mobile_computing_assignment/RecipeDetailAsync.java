@@ -85,17 +85,12 @@ public class RecipeDetailAsync extends AsyncTask<String, String, RecipeDetailAsy
 
             //Download thumbnail images for selected recipe and save in a temporary file (cache) on the device
             Storage saveImg = new Storage();
-            if(saveImg.checkImgCached(ctx,recipeId+"_full_size"))
-            {
-                //Image already saved, no need to download - remove this if statement later, have if not statement only.
-            }
-            else
-            {
-                URL recipeImageUrl = new URL("https://spoonacular.com/recipeImages/" + recipeId + "-556x370.jpg");
-                HttpConnection getImageHttpCon = new HttpConnection(recipeImageUrl);
-                //Cache image.
-                saveImg.saveTempImg(ctx, recipeId + "_full_size", getImageHttpCon.getImageData());
-            }
+
+            URL recipeImageUrl = new URL("https://spoonacular.com/recipeImages/" + recipeId + "-556x370.jpg");
+            HttpConnection getImageHttpCon = new HttpConnection(recipeImageUrl);
+            //Cache image.
+            saveImg.saveTempImg(ctx, recipeId + "_full_size_temp", getImageHttpCon.getImageData());
+
 
             ReturnObject returnObject = new ReturnObject(recipeId, title, readyInTime, instructions, ingredients);
             return returnObject;

@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ListView;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 
 public class SearchResultsActivity extends Activity {
@@ -16,11 +18,22 @@ public class SearchResultsActivity extends Activity {
         Intent intent = getIntent();
         ArrayList<RecipeConstructor>recipes = intent.getParcelableArrayListExtra("recipes");
 
+
+        Boolean loadedFromCache = intent.getBooleanExtra("loadedFromCache",false);
+        Toast.makeText(this, loadedFromCache.toString(), Toast.LENGTH_SHORT).show();
         //Create instance of custom array adapter, passing the arraylist of data.
-        SearchResultsAdapter searchResultsAdapter = new SearchResultsAdapter(this,this,recipes);
+        SearchResultsAdapter searchResultsAdapter = new SearchResultsAdapter(this,this,recipes,loadedFromCache);
 
         //Set adapter for the listview - adds data to the list.
         ListView searchResults = (ListView)findViewById(R.id.searchResultsListView);
         searchResults.setAdapter(searchResultsAdapter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //Clear temporary images - used to get downloaded images in different activities. Temporary imgs no longer needed as this activity is closing.
+        Storage storage = new Storage();
+        storage.clearImgCache(this,true);
     }
 }

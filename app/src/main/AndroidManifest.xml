@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme">
 
         <!--Retains instance when changing orientation - https://developer.android.com/guide/topics/resources/runtime-changes.html-->
-        <activity android:name=".MainActivity" android:configChanges="orientation|screenSize">
+        <activity android:name=".MainActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,19 +24,21 @@
         </activity>
         <activity android:name=".TweetActivity"
                     android:theme="@style/TweetActivityTheme"
-                    android:configChanges="orientation|screenSize">
+                    android:screenOrientation="portrait">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".SearchResultsActivity">
+        <activity android:name=".SearchResultsActivity"
+                    android:screenOrientation="portrait">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".RecipeActivity">
+        <activity android:name=".RecipeActivity"
+                    android:screenOrientation="portrait">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

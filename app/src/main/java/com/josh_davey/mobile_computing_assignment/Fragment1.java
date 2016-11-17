@@ -1,16 +1,27 @@
 package com.josh_davey.mobile_computing_assignment;
 
+import android.content.Intent;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.HandlerThread;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
 
 public class Fragment1 extends Fragment {
     //https://developer.android.com/guide/components/fragments.html
@@ -43,7 +54,57 @@ public class Fragment1 extends Fragment {
                 }
             }
         });
+
+        TextView recentlyViewed =(TextView)view.findViewById(R.id.recentlyViewedBtn);
+        recentlyViewed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //CHECK IF ANY RECENTLY VIEWED EXIST
+                SQLiteDb db = new SQLiteDb(getContext());
+                ArrayList<RecipeConstructor> test = new ArrayList();
+                Cursor c = db.getTABLE_RECIPE_INFO();
+                try {
+                    while (c.moveToNext()) {
+
+                        test.add(new RecipeConstructor(c.getString(0),c.getString(1),c.getString(2)));
+                    }
+                } finally {
+                    if (test.size() != 0) {
+                        Intent intent = new Intent(getContext(), SearchResultsActivity.class);
+                        intent.putExtra("loadedFromCache",true);
+                        intent.putParcelableArrayListExtra("recipes", test);
+                        getContext().startActivity(intent);
+                    }
+                    else
+                    {
+                        Toast.makeText(getContext(), "Your recently viewed list is empty.", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+
+            }
+        });
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+       /* //GET RECENT SEARCHES....
+        SQLiteDb db = new SQLiteDb(getContext());
+        ArrayList test = new ArrayList();
+        Cursor c = db.getTABLE_SEARCH_HISTORY();
 
+        try {
+            while (c.moveToNext()) {
+                test.add(c.getString(1));
+            }
+        } finally {
+            ListView listView = (ListView)getActivity().findViewById(R.id.lstRecentSearches);
+            TextView emptyText = (TextView)getActivity().findViewById(R.id.emptyTxt);
+            ArrayAdapter arrayAdapter = new ArrayAdapter(getContext(),android.R.layout.simple_list_item_1, test);
+            listView.setAdapter(arrayAdapter);
+            listView.setEmptyView(emptyText);
+            c.close();
+        }*/
+    }
 }

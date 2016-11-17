@@ -5,20 +5,35 @@
     android:padding="30dp"
     android:background="#ffffff">
 
-    <EditText
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/spinLayout"
+        android:paddingLeft="5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Search: "/>
+
+    <EditText
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.6"
         android:id="@+id/searchQuery"
         android:maxLength="140"
         android:lines="2"
         android:hint="Search for recipes..."
         android:inputType="textMultiLine"
-        android:padding="5dp"/>
+        android:padding="5dp"
+        android:layout_marginLeft="10dp"
+        android:digits="abcdefghijklmnopqrstuvwxyz "/>
+        </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/spinLayout"
+        android:id="@+id/spinLayout1"
         android:paddingLeft="5dp">
 
         <TextView
@@ -56,14 +71,19 @@
             android:id="@+id/searchAmount"
             android:spinnerMode="dropdown"
             />
-
-
     </LinearLayout>
 <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Get recipes"
         android:id="@+id/submitQuery" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="View recently viewed"
+        android:id="@+id/recentlyViewedBtn" />
 
 
 </LinearLayout>

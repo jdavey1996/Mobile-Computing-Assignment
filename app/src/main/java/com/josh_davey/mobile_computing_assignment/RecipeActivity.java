@@ -1,11 +1,13 @@
 package com.josh_davey.mobile_computing_assignment;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +17,9 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.twitter.sdk.android.core.TwitterCore;
+
+import java.io.File;
+import java.util.ArrayList;
 
 public class RecipeActivity extends AppCompatActivity {
 
@@ -66,12 +71,23 @@ public class RecipeActivity extends AppCompatActivity {
             }
         });
 
-
         ImageView recipeImg = (ImageView)findViewById(R.id.recipeDetailImg);
+        Storage getImage = new Storage();
+        String id =  getIntent().getStringExtra("recipeId");
+        String imagePath;
 
-            Storage getImage = new Storage();
-            String id =  getIntent().getStringExtra("recipeId");
-            recipeImg.setImageBitmap(getImage.getTepImg(this,id+"_full_size"));
+        //If not loaded from cache
+        if(!getIntent().getBooleanExtra("loadedFromCache",false)) {
+            imagePath = id + "_full_size_temp";
+            Toast.makeText(this, "NOT LOADED FROM CACHE", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            imagePath = id + "_full_size";
+        }
+
+        recipeImg.setImageBitmap(getImage.getTepImg(this, imagePath));
+        saveRecipe();
     }
 
     @Override
@@ -84,7 +100,7 @@ public class RecipeActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.clearFaves:
+            case R.id.clearRecent:
 
                 return true;
 
@@ -104,6 +120,38 @@ public class RecipeActivity extends AppCompatActivity {
         //Loads tweet activity as overlay where you can compose a tweet with an image.
         Intent intent = new Intent(this,TweetActivity.class);
         startActivity(intent);
+    }
+
+
+    //Save data in database.
+    public void saveRecipe()
+    {
+       if(!getIntent().getBooleanExtra("loadedFromCache",false)) {
+           String id = getIntent().getStringExtra("recipeId");
+           String title = getIntent().getStringExtra("title");
+           String readyIn = getIntent().getStringExtra("readyIn");
+           ArrayList<String> instructions = getIntent().getStringArrayListExtra("steps");
+           ArrayList<RecipeIngredientsConstructor> ingredients = getIntent().getParcelableArrayListExtra("ingredients");
+
+           SQLiteDb sql = new SQLiteDb(this);
+           sql.insertInto_TABLE_RECIPE_INFO(id, title, readyIn);
+           sql.insertInto_TABLE_RECIPE_INGREDIENTS(id, ingredients);
+           sql.insertInto_TABLE_RECIPE_INSTRUCTIONS(id, instructions);
+
+
+           //Get temporary saved images and save in permanent location.
+           Storage getImage = new Storage();
+           Bitmap fullsizetemp = getImage.getTepImg(this,id+"_full_size_temp");
+           getImage.saveTempImg(this,id+"_full_size",fullsizetemp);
+
+           Bitmap thumbnailtemp = getImage.getTepImg(this,id+"_thumbnail_temp");
+           getImage.saveTempImg(this,id+"_thumbnail",thumbnailtemp);
+       }
+        else
+       {
+           Toast.makeText(this,"Loaded from cache", Toast.LENGTH_SHORT).show();
+       }
+
     }
 
 }

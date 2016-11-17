@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.widget.Toast;
 
 //REFERENCES:
     //http://stackoverflow.com/questions/18747975/difference-between-fragmentpageradapter-and-fragmentstatepageradapter
@@ -45,11 +44,7 @@ public class FragmentAdapter extends FragmentPagerAdapter{
                     return new RecipeFragment2();
                 }
             case 2:
-                if (activity.getLocalClassName().equals("MainActivity"))
-                {
-                    return new Fragment3();
-                }
-                else if (activity.getLocalClassName().equals("RecipeActivity"))
+                if (activity.getLocalClassName().equals("RecipeActivity"))
                 {
                     return new RecipeFragment3();
                 }

@@ -16,7 +16,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 import retrofit2.http.Url;
 
@@ -63,7 +66,7 @@ public class RecipesAsync extends AsyncTask<String, String, ArrayList<RecipeCons
                     //http://stackoverflow.com/questions/19167954/use-uri-builder-in-android-or-create-url-with-variables
                     Uri uri = Uri.parse("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/recipes/search")
                             .buildUpon()
-                            .appendQueryParameter("query", query)
+                            .appendQueryParameter("query", query.trim())
                             .appendQueryParameter("type", type)
                             .appendQueryParameter("number", amount)
                             .build();
@@ -87,23 +90,24 @@ public class RecipesAsync extends AsyncTask<String, String, ArrayList<RecipeCons
                         Log.i("ids",recipeInfo.getJSONObject(i).getString("id"));
                     }
 
+
+                    //Download thumbnail images for each recipe and save in a temporary file (cache) on the device
+                    for (int i = 0; i < recipeInfo.length(); i++) {
+                        String recipeId = recipeInfo.getJSONObject(i).getString("id");
+                        //Check if image is already saved in cache. Only download if it isn't.
+                            URL recipeImageUrl = new URL("https://spoonacular.com/recipeImages/" + recipeId + "-90x90.jpg");
+                            HttpConnection getImageHttpCon = new HttpConnection(recipeImageUrl);
+                    }
+
+
                     //Download thumbnail images for each recipe and save in a temporary file (cache) on the device
                     Storage saveImg = new Storage();
                     for (int i = 0; i < recipeInfo.length(); i++) {
                         String recipeId = recipeInfo.getJSONObject(i).getString("id");
-                        //Check if image is already saved in cache. Only download if it isn't.
-                        if(saveImg.checkImgCached(ctx,recipeId+"_thumbnail"))
-                        {
-                            //Image already saved, no need to download - remove this if statement later, have if not statement only.
-                        }
-                        else
-                        {
-                            URL recipeImageUrl = new URL("https://spoonacular.com/recipeImages/" + recipeId + "-90x90.jpg");
-                            HttpConnection getImageHttpCon = new HttpConnection(recipeImageUrl);
-                            //Cache image.
-                            saveImg.saveTempImg(ctx, recipeId+"_thumbnail", getImageHttpCon.getImageData());
-                        }
-
+                        URL recipeImageUrl = new URL("https://spoonacular.com/recipeImages/" + recipeId + "-90x90.jpg");
+                        HttpConnection getImageHttpCon = new HttpConnection(recipeImageUrl);
+                        //Cache image.
+                        saveImg.saveTempImg(ctx, recipeId+"_thumbnail_temp", getImageHttpCon.getImageData());
                     }
                     return data;
                 } catch (Exception e) {
@@ -144,4 +148,5 @@ public class RecipesAsync extends AsyncTask<String, String, ArrayList<RecipeCons
         super.onCancelled();
         Toast.makeText(ctx, "cancelled", Toast.LENGTH_SHORT).show();
     }
+
 }

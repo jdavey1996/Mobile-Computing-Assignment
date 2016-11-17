@@ -28,9 +28,9 @@ public class RecipeFragment3 extends Fragment{
         Intent intent = getActivity().getIntent();
         ArrayList<String> list = intent.getStringArrayListExtra("steps");
 
-        ListView ingredientsList = (ListView)view.findViewById(R.id.instructionsList);
+        ListView instructionsList = (ListView)view.findViewById(R.id.instructionsList);
         ArrayAdapter arrayAdapter = new ArrayAdapter(getContext(),android.R.layout.simple_list_item_1, list);
-        ingredientsList.setAdapter(arrayAdapter);
+        instructionsList.setAdapter(arrayAdapter);
     }
 
 

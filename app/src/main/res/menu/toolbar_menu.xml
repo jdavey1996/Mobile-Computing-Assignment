@@ -2,9 +2,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:title="Clear favourites"
+    <item android:title="Clear recently viewed"
         app:showAsAction="never"
-        android:id="@+id/clearFaves"/>
+        android:id="@+id/clearRecent"/>
     <item android:title="Unlink twitter"
         app:showAsAction="never"
         android:id="@+id/unlinkTwitter"/>

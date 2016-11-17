@@ -41,7 +41,7 @@ public class Storage {
 //https://developer.android.com/training/basics/data-storage/files.html
 
     //Save temporary bitmap image.
-    public void saveTempImg(Context ctx, String name,Bitmap image) {
+    public void saveTempImg(Context ctx, String name, Bitmap image) {
         File cacheDir = ctx.getCacheDir();
         File f = new File(cacheDir, name);
         try {
@@ -69,7 +69,7 @@ public class Storage {
             return null;
         }
     }
-
+/*
     public Boolean checkImgCached(Context ctx, String name)
     {
         File cacheDir = ctx.getCacheDir();
@@ -82,16 +82,27 @@ public class Storage {
         {
             return false;
         }
-    }
+    }*/
 
-    public Boolean clearImgCache(Context ctx)
+    public Boolean clearImgCache(Context ctx, Boolean temp)
     {
+        String contains1, contains2;
+        if(temp)
+        {
+            contains1 = "full_size_temp";
+            contains2= "thumbnail_temp";
+        }
+        else
+        {
+            contains1 = "full_size";
+            contains2= "thumbnail";
+        }
         //http://stackoverflow.com/questions/26986637/can-android-clear-files-from-the-cache-directory-of-my-application-while-it-is-r
         try {
             File[] directory = ctx.getCacheDir().listFiles();
             if (directory != null) {
                 for (File file : directory) {
-                    if(file.getName().contains("full_size")|| file.getName().contains("thumbnail")) {
+                    if(file.getName().contains(contains1)|| file.getName().contains(contains2)) {
                         file.delete();
                         Log.i("deleted", file.getName());
                     }
