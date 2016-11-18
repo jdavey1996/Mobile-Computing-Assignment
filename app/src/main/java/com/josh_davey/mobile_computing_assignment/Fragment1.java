@@ -62,28 +62,8 @@ public class Fragment1 extends Fragment {
         recentlyViewed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //CHECK IF ANY RECENTLY VIEWED EXIST
-                SQLiteDb db = new SQLiteDb(getContext());
-                ArrayList<RecipeConstructor> test = new ArrayList();
-                Cursor c = db.getTABLE_RECIPE_INFO();
-                try {
-                    while (c.moveToNext()) {
-                        test.add(new RecipeConstructor(c.getString(0),c.getString(1),c.getString(2)));
-                    }
-                } finally {
-                    if (test.size() != 0) {
-                        Intent intent = new Intent(getContext(), SearchResultsActivity.class);
-                        intent.putExtra("loadedFromCache",true);
-                        intent.putParcelableArrayListExtra("recipes", test);
-                        getContext().startActivity(intent);
-                    }
-                    else
-                    {
-                        Toast.makeText(getContext(), "Your recently viewed list is empty.", Toast.LENGTH_SHORT).show();
-                    }
-                    c.close();
-                    db.closeDbrCon();
-                }
+                SQLiteGetRecipeListAsync getRecipeListAsync = new SQLiteGetRecipeListAsync(getContext());
+                getRecipeListAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }
         });
 

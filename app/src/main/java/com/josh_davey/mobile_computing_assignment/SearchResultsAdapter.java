@@ -64,36 +64,12 @@ public class SearchResultsAdapter extends ArrayAdapter<RecipeConstructor> {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //If list was loaded from cache( SQLiteDatabsae).
                 if (loadedFromCache)
                 {
-                    //Get data from database and start intent to display it.
-                    SQLiteDb sql = new SQLiteDb(ctx);
-                    Cursor c1 = sql.getTABLE_RECIPE_INGREDIENTS(item.getId());
-                    ArrayList<RecipeIngredientsConstructor> ingredients = new ArrayList<RecipeIngredientsConstructor>();
-                    while (c1.moveToNext()) {
-
-                        ingredients.add(new RecipeIngredientsConstructor(c1.getString(2),c1.getString(3),c1.getString(4)));
-                    }
-                    c1.close();
-
-                    Cursor c2 = sql.getTABLE_RECIPE_INSTRUCTIONS(item.getId());
-                    ArrayList<String> instructions = new ArrayList<String>();
-                    while (c2.moveToNext()) {
-
-                        instructions.add(c2.getString(2));
-                    }
-                    c2.close();
-
-                    sql.closeDbrCon();
-
-                    Intent intent = new Intent(ctx, RecipeActivity.class);
-                    intent.putExtra("loadedFromCache",true);
-                    intent.putExtra("recipeId", item.getId());
-                    intent.putExtra("title", item.getTitle());
-                    intent.putExtra("readyIn", item.getReadyInMinutes());
-                    intent.putStringArrayListExtra("steps", instructions);
-                    intent.putParcelableArrayListExtra("ingredients",ingredients);
-                    ctx.startActivity(intent);
+                    //Get recipe data from cache (SQLite Database).
+                    SQLiteGetRecipeAsync sqLiteGetRecipeAsync = new SQLiteGetRecipeAsync(ctx);
+                    sqLiteGetRecipeAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,item.getId(), item.getTitle(),item.getReadyInMinutes());
 
                 }
                 else {

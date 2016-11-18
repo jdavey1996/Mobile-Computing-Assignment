@@ -26,17 +26,6 @@ public class Storage {
         return false;
     }
 
-    /* Checks if external storage is available to at least read */
-    public boolean isExternalStorageReadable() {
-        String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state) ||
-                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
-            return true;
-        }
-        return false;
-    }
-
-
 //http://stackoverflow.com/questions/7540386/android-saving-and-loading-a-bitmap-in-cache-from-diferent-activities
 //https://developer.android.com/training/basics/data-storage/files.html
 
@@ -69,20 +58,7 @@ public class Storage {
             return null;
         }
     }
-/*
-    public Boolean checkImgCached(Context ctx, String name)
-    {
-        File cacheDir = ctx.getCacheDir();
-        File f = new File(cacheDir, name);
-        if(f.exists())
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }*/
+
 
     public Boolean clearImgCache(Context ctx, Boolean temp)
     {

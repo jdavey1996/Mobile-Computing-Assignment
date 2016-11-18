@@ -99,19 +99,26 @@ public class TweetActivity extends Activity {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                Storage storage = new Storage();
+                //Check if storage is readable and writable before attempting to take picture.
+                if(storage.isExternalStorageWritable()) {
+                    String directory = "appimages";
+                    String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + File.separator + directory;
 
-                String directory = "appimages";
-                String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + File.separator + directory;
+                    File outputDir = new File(path);
+                    outputDir.mkdirs();
 
-                File outputDir = new File(path);
-                outputDir.mkdirs();
+                    File newFile = new File(path + "/" + "latestImgToTweet.png");
 
-                File newFile = new File(path + "/" + "latestImgToTweet.png");
+                    savedImageUri = Uri.fromFile(newFile);
 
-                savedImageUri = Uri.fromFile(newFile);
-
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, savedImageUri);
-                startActivityForResult(takePictureIntent, 1);
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, savedImageUri);
+                    startActivityForResult(takePictureIntent, 1);
+                }
+                else
+                {
+                    Toast.makeText(this,"Storage isn't readable or writable,unable to add image to tweet.",Toast.LENGTH_SHORT);
+                }
             } else {
                 Toast.makeText(TweetActivity.this, "Unable to take photo", Toast.LENGTH_SHORT).show();
             }
