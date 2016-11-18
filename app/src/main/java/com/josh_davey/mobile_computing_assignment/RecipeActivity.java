@@ -21,7 +21,7 @@ import com.twitter.sdk.android.core.TwitterCore;
 import java.io.File;
 import java.util.ArrayList;
 
-public class RecipeActivity extends AppCompatActivity {
+public class RecipeActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,30 +90,6 @@ public class RecipeActivity extends AppCompatActivity {
         saveRecipe();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.clearRecent:
-
-                return true;
-
-            case R.id.unlinkTwitter:
-                Tweets tweets = new Tweets(this,null,null,null,null);
-                tweets.unlinkTwitter();
-
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
 
     public void startTweetActivity(View view)
     {
@@ -139,7 +115,7 @@ public class RecipeActivity extends AppCompatActivity {
            sql.insertInto_TABLE_RECIPE_INSTRUCTIONS(id, instructions);
 
 
-           //Get temporary saved images and save in permanent location.
+           //Get temporary saved images and save in permanent location. - NO need to encrpyt images as files on internal storage are private to this application.
            Storage getImage = new Storage();
            Bitmap fullsizetemp = getImage.getTepImg(this,id+"_full_size_temp");
            getImage.saveTempImg(this,id+"_full_size",fullsizetemp);

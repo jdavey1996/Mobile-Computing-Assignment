@@ -44,21 +44,4 @@ public class RecipeFragment1 extends Fragment{
         readyInMinutes.setText("Ready in "+readyIn+"minutes");
 
     }
-
-
-
-
-       /* //Save data.
-        SQLiteDbAsync sqLiteDbAsync = new SQLiteDbAsync(getContext());
-        sqLiteDbAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,
-                "save",
-                id,
-                recipeTitle,
-                readyIn,
-                thumbnailImg,
-                fullImg,
-                ingredients,
-                instructions);*/
-
-
 }

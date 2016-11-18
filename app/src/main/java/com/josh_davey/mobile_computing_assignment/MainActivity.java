@@ -18,7 +18,7 @@ import com.twitter.sdk.android.core.TwitterCore;
 
 import io.fabric.sdk.android.Fabric;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
     private static final String TWITTER_KEY = "IBzqCFJ6tTHZHHBF5PSsd7LsU";
@@ -84,32 +84,5 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.clearRecent:
-                SQLiteDb db = new SQLiteDb(this);
-                db.clearDatabaseTables();
-
-                Storage storage = new Storage();
-                storage.clearImgCache(this,false);
-                return true;
-
-            case R.id.unlinkTwitter:
-                Tweets tweet = new Tweets(this,this,null,null,null);
-                tweet.unlinkTwitter();
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
 }
 

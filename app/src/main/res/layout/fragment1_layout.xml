@@ -1,89 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="30dp"
-    android:background="#ffffff">
+    android:background="#ffffff"
+    android:orientation="vertical"
+    android:padding="30dp">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/spinLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:paddingLeft="5dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Search: "/>
+            android:text="Search: " />
 
-    <EditText
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.6"
-        android:id="@+id/searchQuery"
-        android:maxLength="140"
-        android:lines="2"
-        android:hint="Search for recipes..."
-        android:inputType="textMultiLine"
-        android:padding="5dp"
-        android:layout_marginLeft="10dp"
-        android:digits="abcdefghijklmnopqrstuvwxyz "/>
-        </LinearLayout>
+        <EditText
+            android:id="@+id/searchQuery"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="0.6"
+            android:digits="abcdefghijklmnopqrstuvwxyz "
+            android:hint="Search for recipes..."
+            android:inputType="textMultiLine"
+            android:lines="2"
+            android:maxLength="140"
+            android:padding="5dp" />
+
+        <ImageView
+            android:id="@+id/queryClearBtn"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:onClick=""
+            android:paddingEnd="10dp"
+            android:src="@drawable/ic_close_black_24dp" />
+
+    </LinearLayout>
+
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/spinLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:paddingLeft="5dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Recipe type: "/>
+            android:text="Recipe type: " />
 
         <Spinner
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.6"
-            android:padding="10dp"
-            android:entries="@array/search_types_array"
             android:id="@+id/searchType"
-            android:spinnerMode="dropdown"
-            />
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.6"
+            android:entries="@array/search_types_array"
+            android:padding="10dp"
+            android:spinnerMode="dropdown" />
     </LinearLayout>
+
     <LinearLayout
+        android:id="@+id/spinLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/spinLayout2"
         android:paddingLeft="5dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Amount of recipes: "/>
+            android:text="Amount of recipes: " />
 
         <Spinner
+            android:id="@+id/searchAmount"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.6"
-            android:padding="10dp"
             android:entries="@array/search_amount_array"
-            android:id="@+id/searchAmount"
-            android:spinnerMode="dropdown"
-            />
+            android:padding="10dp"
+            android:spinnerMode="dropdown" />
     </LinearLayout>
-<Button
+
+    <Button
+        android:id="@+id/submitQuery"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Get recipes"
-        android:id="@+id/submitQuery" />
+        android:text="Get recipes" />
 
     <TextView
+        android:id="@+id/recentlyViewedBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="View recently viewed"
-        android:id="@+id/recentlyViewedBtn" />
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 
 </LinearLayout>
