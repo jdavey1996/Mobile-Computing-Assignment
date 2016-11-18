@@ -68,7 +68,6 @@ public class Fragment1 extends Fragment {
                 Cursor c = db.getTABLE_RECIPE_INFO();
                 try {
                     while (c.moveToNext()) {
-
                         test.add(new RecipeConstructor(c.getString(0),c.getString(1),c.getString(2)));
                     }
                 } finally {
@@ -82,7 +81,8 @@ public class Fragment1 extends Fragment {
                     {
                         Toast.makeText(getContext(), "Your recently viewed list is empty.", Toast.LENGTH_SHORT).show();
                     }
-
+                    c.close();
+                    db.closeDbrCon();
                 }
             }
         });

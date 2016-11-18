@@ -3,24 +3,31 @@ package com.josh_davey.mobile_computing_assignment;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.provider.BaseColumns;
-import android.util.Log;
-import android.widget.Toast;
 
-import java.lang.reflect.Array;
-import java.security.Timestamp;
+import android.util.Log;
+
+import net.sqlcipher.database.SQLiteDatabase;
+import net.sqlcipher.database.SQLiteOpenHelper;
+
 import java.util.ArrayList;
 
 public class SQLiteDb extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "db_saved_recipes";
+    private static final String DATABASE_ENCRYPTION_PASS = "test";
+  //  SQLiteDatabase dbr;
+    //SQLiteDatabase dbw;
 
+    Context ctx;
     public SQLiteDb(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.ctx = context;
+
+       // dbr = this.getReadableDatabase("test");
+        //dbw = this.getWritableDatabase("test2");
     }
+
 
     //Tables
     private static final String TABLE_RECIPE_INFO = "tbl_recipe_info";
@@ -71,6 +78,7 @@ public class SQLiteDb extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+
         db.execSQL(SQL_CREATE_TABLE_RECIPE_INFO);
         db.execSQL(SQL_CREATE_TABLE_RECIPE_INGREDIENTS);
         db.execSQL(SQL_CREATE_TABLE_RECIPE_INSTRUCTIONS);
@@ -91,11 +99,12 @@ public class SQLiteDb extends SQLiteOpenHelper {
     public void insertInto_TABLE_RECIPE_INFO(String recipeId, String name, String readyIn)
     {
         //Get any rows back that contain the current recipe ID.
-        SQLiteDatabase dbr = this.getReadableDatabase();
+        SQLiteDatabase dbr = this.getReadableDatabase("test");
         Cursor res = dbr.query(TABLE_RECIPE_INFO,null,recipe_info_ID +"=?",new String[]{recipeId},null,null,null);
+  //      dbr.close();
 
         //Sets values to write to database.
-        SQLiteDatabase dbw = getWritableDatabase();
+        SQLiteDatabase dbw = getWritableDatabase("test");
         ContentValues contentValues = new ContentValues();
         contentValues.put(recipe_info_ID, recipeId);
         contentValues.put(recipe_info_NAME, name);
@@ -112,16 +121,19 @@ public class SQLiteDb extends SQLiteOpenHelper {
             dbw.update(TABLE_RECIPE_INFO,contentValues,recipe_info_ID +"=?", new String[]{recipeId});
         }
         res.close();
+
+   //     dbw.close();
     }
 
 
     public void insertInto_TABLE_RECIPE_INGREDIENTS(String recipeId, ArrayList<RecipeIngredientsConstructor> ingredients)
     {
         //Get any rows back that contain the current recipe ID.
-        SQLiteDatabase dbr = this.getReadableDatabase();
+        SQLiteDatabase dbr = this.getReadableDatabase("test");
         Cursor res = dbr.query(TABLE_RECIPE_INGREDIENTS,null,recipe_ingredients_RECIPE_ID +"=?",new String[]{recipeId},null,null,null);
+     //   dbr.close();
 
-        SQLiteDatabase dbw = getWritableDatabase();
+        SQLiteDatabase dbw = getWritableDatabase("test");
 
         if(res.getCount() != 0)
         {
@@ -138,15 +150,19 @@ public class SQLiteDb extends SQLiteOpenHelper {
             contentValues.put(recipe_ingredients_INGREDIENTS_UNIT, ingredients.get(i).getUnit());
             dbw.insert(TABLE_RECIPE_INGREDIENTS, null, contentValues);
         }
+        res.close();
+    //    dbw.close();
     }
 
 
     public void insertInto_TABLE_RECIPE_INSTRUCTIONS(String recipeId, ArrayList<String> instructions)
     { //Get any rows back that contain the current recipe ID.
-        SQLiteDatabase dbr = this.getReadableDatabase();
+        SQLiteDatabase dbr = this.getReadableDatabase("test");
         Cursor res = dbr.query(TABLE_RECIPE_INSTRUCTIONS,null,recipe_instructions_RECIPE_ID +"=?",new String[]{recipeId},null,null,null);
 
-        SQLiteDatabase dbw = getWritableDatabase();
+//        dbr.close();
+
+        SQLiteDatabase dbw = getWritableDatabase("test");
 
         if(res.getCount() != 0)
         {
@@ -155,28 +171,24 @@ public class SQLiteDb extends SQLiteOpenHelper {
 
         //Loop through array list
         for (int i = 0; i < instructions.size(); i++) {
-            SQLiteDatabase db = getWritableDatabase();
             ContentValues contentValues = new ContentValues();
             contentValues.put(recipe_instructions_RECIPE_ID, recipeId);
             contentValues.put(recipe_instructions_INSTRUCTIONS_NUM, i);
             contentValues.put(recipe_instructions_INSTRUCTIONS_TXT, instructions.get(i));
-            db.insert(TABLE_RECIPE_INSTRUCTIONS, null, contentValues);
+            dbw.insert(TABLE_RECIPE_INSTRUCTIONS, null, contentValues);
         }
+        res.close();
+    //    dbw.close();
     }
-
-
-
-
-
 
     //Clear data from all databases. This is ran onCreate to wipe any previous temporary data.
     public Boolean clearDatabaseTables()
     {
         try {
-            SQLiteDatabase db = this.getWritableDatabase();
-            db.delete(TABLE_RECIPE_INFO, null, null);
-            db.delete(TABLE_RECIPE_INGREDIENTS, null, null);
-            db.delete(TABLE_RECIPE_INSTRUCTIONS, null, null);
+            SQLiteDatabase dbw = this.getWritableDatabase("test");
+            dbw.delete(TABLE_RECIPE_INFO, null, null);
+            dbw.delete(TABLE_RECIPE_INGREDIENTS, null, null);
+            dbw.delete(TABLE_RECIPE_INSTRUCTIONS, null, null);
             return true;
         }catch (Exception e)
         {
@@ -187,23 +199,38 @@ public class SQLiteDb extends SQLiteOpenHelper {
 
     //Gets list of saved recipes.
     public Cursor getTABLE_RECIPE_INFO() {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.query(TABLE_RECIPE_INFO,null,null,null,null,null,null);
+        SQLiteDatabase dbr = this.getReadableDatabase("test");
+        Cursor res = dbr.query(TABLE_RECIPE_INFO,null,null,null,null,null,null);
+        Log.i("dbhelp", "test");
+       // dbr.close();
         return res;
     }
 
     //Gets list of saved ingredients for selected recipe.
     public Cursor getTABLE_RECIPE_INGREDIENTS(String recipeId) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.query(TABLE_RECIPE_INGREDIENTS,null,recipe_ingredients_RECIPE_ID +"=?",new String[]{recipeId},null,null,recipe_ingredients_INGREDIENTS_NUM +" ASC");
+        SQLiteDatabase dbr = this.getReadableDatabase("test");
+        Cursor res = dbr.query(TABLE_RECIPE_INGREDIENTS,null,recipe_ingredients_RECIPE_ID +"=?",new String[]{recipeId},null,null,recipe_ingredients_INGREDIENTS_NUM +" ASC");
+      //  dbr.close();
         return res;
     }
 
     //Gets list of saved instructions for selected recipe.
     public Cursor getTABLE_RECIPE_INSTRUCTIONS(String recipeId) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.query(TABLE_RECIPE_INSTRUCTIONS,null,recipe_instructions_RECIPE_ID +"=?",new String[]{recipeId},null,null,recipe_instructions_INSTRUCTIONS_NUM +" ASC");
+        SQLiteDatabase dbr = this.getReadableDatabase("test");
+        Cursor res = dbr.query(TABLE_RECIPE_INSTRUCTIONS,null,recipe_instructions_RECIPE_ID +"=?",new String[]{recipeId},null,null,recipe_instructions_INSTRUCTIONS_NUM +" ASC");
+      //  dbr.close();
         return res;
+    }
+
+    public void closeDbrCon()
+    {
+        this.getReadableDatabase("test").close();
+    }
+
+
+    public void closeDbwCon()
+    {
+        this.getWritableDatabase("test").close();
     }
 
 

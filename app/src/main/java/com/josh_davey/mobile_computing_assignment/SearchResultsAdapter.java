@@ -74,6 +74,7 @@ public class SearchResultsAdapter extends ArrayAdapter<RecipeConstructor> {
 
                         ingredients.add(new RecipeIngredientsConstructor(c1.getString(2),c1.getString(3),c1.getString(4)));
                     }
+                    c1.close();
 
                     Cursor c2 = sql.getTABLE_RECIPE_INSTRUCTIONS(item.getId());
                     ArrayList<String> instructions = new ArrayList<String>();
@@ -81,6 +82,9 @@ public class SearchResultsAdapter extends ArrayAdapter<RecipeConstructor> {
 
                         instructions.add(c2.getString(2));
                     }
+                    c2.close();
+
+                    sql.closeDbrCon();
 
                     Intent intent = new Intent(ctx, RecipeActivity.class);
                     intent.putExtra("loadedFromCache",true);

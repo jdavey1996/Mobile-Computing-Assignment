@@ -87,6 +87,7 @@ public class RecipeActivity extends BaseActivity {
         }
 
         recipeImg.setImageBitmap(getImage.getTepImg(this, imagePath));
+
         saveRecipe();
     }
 
@@ -114,6 +115,7 @@ public class RecipeActivity extends BaseActivity {
            sql.insertInto_TABLE_RECIPE_INGREDIENTS(id, ingredients);
            sql.insertInto_TABLE_RECIPE_INSTRUCTIONS(id, instructions);
 
+           sql.closeDbwCon();
 
            //Get temporary saved images and save in permanent location. - NO need to encrpyt images as files on internal storage are private to this application.
            Storage getImage = new Storage();

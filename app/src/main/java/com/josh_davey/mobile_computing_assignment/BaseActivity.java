@@ -9,6 +9,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+//https://tausiq.wordpress.com/2013/01/18/android-base-activity-class-example/
+//http://stackoverflow.com/questions/7204540/multiple-activities-identical-oncreateoptionsmenu-onoptionsitemselected-and-on
 public abstract class BaseActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
