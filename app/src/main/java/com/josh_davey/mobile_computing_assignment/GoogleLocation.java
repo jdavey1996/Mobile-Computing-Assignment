@@ -120,8 +120,15 @@ public class GoogleLocation implements GoogleApiClient.ConnectionCallbacks, Goog
             //Set map to show location and set zoom level.
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(),location.getLongitude()),13));
             //Get places near location once location has been found.
-            googlePlacesAsync = new GooglePlacesAsync(ctx,activity,googleMap);
-            googlePlacesAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,location.getLatitude(),location.getLongitude());
+            googlePlacesAsync = new GooglePlacesAsync(ctx, activity, googleMap);
+            googlePlacesAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, location.getLatitude(), location.getLongitude());
+
+            //Checks if device is connected to either a wifi network or mobile network. Toast if not.
+            NetworkStatus networkStatus = new NetworkStatus(ctx);
+            if(!networkStatus.checkConnection()) {
+                Toast.makeText(ctx, "Nearby places will be downloaded once an internet connection becomes available.", Toast.LENGTH_SHORT).show();
+            }
+       
         }
     }
 

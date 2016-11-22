@@ -35,12 +35,6 @@ public class SQLiteSaveRecipeAsync extends AsyncTask<Object, String, String> {
         ArrayList<String> instructions = (ArrayList<String>) params[4];
 
         try {
-
-            SQLiteDb sql = new SQLiteDb(ctx);
-            sql.insertInto_TABLE_RECIPE_INFO(recipeId, recipeTitle, readyIn,getDateTime());
-            sql.insertInto_TABLE_RECIPE_INGREDIENTS(recipeId, ingredients);
-            sql.insertInto_TABLE_RECIPE_INSTRUCTIONS(recipeId, instructions);
-
             //Get temporary saved images and save in permanent location. - NO need to encrpyt images as files on internal storage are private to this application.
             Storage getImage = new Storage();
             Bitmap fullsizetemp = getImage.getTepImg(ctx,recipeId+"_full_size_temp");
@@ -48,6 +42,12 @@ public class SQLiteSaveRecipeAsync extends AsyncTask<Object, String, String> {
 
             Bitmap thumbnailtemp = getImage.getTepImg(ctx,recipeId+"_thumbnail_temp");
             getImage.saveTempImg(ctx,recipeId+"_thumbnail",thumbnailtemp);
+
+            SQLiteDb sql = new SQLiteDb(ctx);
+            sql.insertInto_TABLE_RECIPE_INFO(recipeId, recipeTitle, readyIn,getDateTime());
+            sql.insertInto_TABLE_RECIPE_INGREDIENTS(recipeId, ingredients);
+            sql.insertInto_TABLE_RECIPE_INSTRUCTIONS(recipeId, instructions);
+
 
             return "success";
         }catch (Exception e)
@@ -69,6 +69,8 @@ public class SQLiteSaveRecipeAsync extends AsyncTask<Object, String, String> {
             Toast.makeText(ctx, "recipe cached.", Toast.LENGTH_SHORT).show();
         }
     }
+
+    //http://tips.androidhive.info/2013/10/android-insert-datetime-value-in-sqlite-database/
     private String getDateTime() {
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "yyyy-MM-dd HH:mm:ss", Locale.getDefault());

@@ -42,6 +42,7 @@ public class Fragment1 extends Fragment {
         final Spinner type = (Spinner)view.findViewById(R.id.searchType);
         final Spinner amount = (Spinner)view.findViewById(R.id.searchAmount);
 
+       final NetworkStatus networkStatus = new NetworkStatus(getContext());
 
 
         Button getBtn = (Button)view.findViewById(R.id.submitQuery);
@@ -50,10 +51,12 @@ public class Fragment1 extends Fragment {
             public void onClick(View v) {
                 RecipesAsync searchRecipes = new RecipesAsync(getActivity(),getContext());
                 if (searchRecipes.getStatus() != AsyncTask.Status.RUNNING) {
-                    //http://stackoverflow.com/questions/30618600/asynctask-takes-a-long-time-before-entering-doinbackground
-                    searchRecipes.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,query.getText().toString(),type.getSelectedItem().toString(),amount.getSelectedItem().toString());
-                }else {
-                    Toast.makeText(getContext(), "running", Toast.LENGTH_SHORT).show();
+                    //Checks if device is connected to either a wifi network or mobile network.
+                    if(networkStatus.checkConnection()) {
+                        Toast.makeText(getContext(), "checked", Toast.LENGTH_SHORT).show();
+                        //http://stackoverflow.com/questions/30618600/asynctask-takes-a-long-time-before-entering-doinbackground
+                        searchRecipes.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, query.getText().toString(), type.getSelectedItem().toString(), amount.getSelectedItem().toString());
+                    }
                 }
             }
         });

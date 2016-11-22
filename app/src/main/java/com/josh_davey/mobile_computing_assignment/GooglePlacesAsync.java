@@ -119,6 +119,7 @@ public class GooglePlacesAsync extends AsyncTask<Double,String,JSONArray>
                         //Add marker to the map.
                         googleMap.addMarker(marker);
                     }
+                    Toast.makeText(ctx, "Nearby places updated.", Toast.LENGTH_SHORT).show();
                 }
                 else
                 {

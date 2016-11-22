@@ -75,8 +75,12 @@ public class SearchResultsAdapter extends ArrayAdapter<RecipeConstructor> {
                 else {
                     RecipeDetailAsync getRecipeDetail = new RecipeDetailAsync(activity, ctx);
                     if (getRecipeDetail.getStatus() != AsyncTask.Status.RUNNING) {
-                        //http://stackoverflow.com/questions/30618600/asynctask-takes-a-long-time-before-entering-doinbackground
-                        getRecipeDetail.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, item.getId(), item.getTitle(), item.getReadyInMinutes());
+                        //Checks if device is connected to either a wifi network or mobile network.
+                        NetworkStatus networkStatus = new NetworkStatus(getContext());
+                        if(networkStatus.checkConnection()) {
+                            //http://stackoverflow.com/questions/30618600/asynctask-takes-a-long-time-before-entering-doinbackground
+                            getRecipeDetail.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, item.getId(), item.getTitle(), item.getReadyInMinutes());
+                        }
                     } else {
                         Toast.makeText(getContext(), "running", Toast.LENGTH_SHORT).show();
                     }

@@ -4,6 +4,7 @@ package com.josh_davey.mobile_computing_assignment;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.View;
@@ -86,7 +87,7 @@ public class Tweets {
             @Override
             public void failure(TwitterException e) {
                 e.printStackTrace();
-                Toast.makeText(ctx, "Cannot log in", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ctx, "Error occurred, unable to log in.", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -104,26 +105,33 @@ public class Tweets {
 
         final ProgressDialog uploadImgDialog = new ProgressDialog(ctx,R.style.ProgressDialogTheme);
         uploadImgDialog.setIndeterminate(true);
-        uploadImgDialog.setCancelable(false);
-        uploadImgDialog.setCanceledOnTouchOutside(false);
+        uploadImgDialog.setCancelable(true);
+        uploadImgDialog.setCanceledOnTouchOutside(true);
         uploadImgDialog.setTitle("Tweeting..");
         uploadImgDialog.setMessage("Uploading image...");
         uploadImgDialog.show();
 
         //Upload image, request callback.
         MediaService ms = twitterApiClient.getMediaService();
-        Call<Media> uploadImgCall = ms.upload(file, null, null);
+        final Call<Media> uploadImgCall = ms.upload(file, null, null);
         uploadImgCall.enqueue(new Callback<Media>() {
             @Override
             public void success(Result<Media> result) {
-                Toast.makeText(ctx, "Image uploaded" + result.data.mediaIdString, Toast.LENGTH_SHORT).show();
                 sendTweet(result.data.mediaIdString);
                 uploadImgDialog.dismiss();
             }
             @Override
             public void failure(TwitterException exception) {
-                Toast.makeText(ctx, "Image not uploaded" + exception, Toast.LENGTH_SHORT).show();
+                Toast.makeText(ctx, "Unable to upload image, tweet not sent.", Toast.LENGTH_SHORT).show();
                 uploadImgDialog.dismiss();
+            }
+        });
+
+        //Cancel listener to cancel uploading image for tweet.
+        uploadImgDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                uploadImgCall.cancel();
             }
         });
     }
@@ -138,27 +146,35 @@ public class Tweets {
 
         final ProgressDialog tweetingDialog = new ProgressDialog(ctx,R.style.ProgressDialogTheme);
         tweetingDialog.setIndeterminate(true);
-        tweetingDialog.setCancelable(false);
-        tweetingDialog.setCanceledOnTouchOutside(false);
+        tweetingDialog.setCancelable(true);
+        tweetingDialog.setCanceledOnTouchOutside(true);
         tweetingDialog.setTitle("Tweeting..");
         tweetingDialog.setMessage("Sending tweet...");
         tweetingDialog.show();
 
         twitterApiClient = TwitterCore.getInstance().getApiClient();
         StatusesService statusesService = twitterApiClient.getStatusesService();
-        Call<Tweet> tweetCall = statusesService.update(tweetInput.getText().toString(), null, false, null, null, null, false, false, mediaIdString);
+        final Call<Tweet> tweetCall = statusesService.update(tweetInput.getText().toString(), null, false, null, null, null, false, false, mediaIdString);
         tweetCall.enqueue(new Callback<Tweet>() {
             @Override
             public void success(Result<Tweet> result) {
                 tweetingDialog.dismiss();
-                Toast.makeText(ctx, "Tweeted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ctx, "Your tweet has been tweeted!", Toast.LENGTH_SHORT).show();
                 activity.finish();
             }
             public void failure(TwitterException exception) {
                 tweetingDialog.dismiss();
-                Toast.makeText(ctx, "Not Tweeted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ctx, "Error occurred, unable to post tweet.", Toast.LENGTH_SHORT).show();
             }
         });
+
+        tweetingDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                tweetCall.cancel();
+            }
+        });
+
     }
 
     //Clears session, logs user out and removes all cookies - removes traces of user login left.

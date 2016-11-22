@@ -92,9 +92,13 @@ public class RecipeActivity extends AppCompatActivity {
 
 
     public void startTweetActivity(View view) {
-        //Loads tweet activity as overlay where you can compose a tweet with an image.
-        Intent intent = new Intent(this, TweetActivity.class);
-        startActivity(intent);
+        //Checks if device is connected to either a wifi network or mobile network. Toast if not.
+        NetworkStatus networkStatus = new NetworkStatus(this);
+        if(networkStatus.checkConnection()) {
+            //Loads tweet activity as overlay where you can compose a tweet with an image.
+            Intent intent = new Intent(this, TweetActivity.class);
+            startActivity(intent);
+        }
     }
 
 
