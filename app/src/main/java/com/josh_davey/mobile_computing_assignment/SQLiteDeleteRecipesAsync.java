@@ -1,14 +1,11 @@
 package com.josh_davey.mobile_computing_assignment;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-
 public class SQLiteDeleteRecipesAsync extends AsyncTask<Object, String, String> {
-
+    //Variables.
     Context ctx;
 
     public SQLiteDeleteRecipesAsync(Context ctx) {
@@ -20,17 +17,18 @@ public class SQLiteDeleteRecipesAsync extends AsyncTask<Object, String, String> 
         super.onPreExecute();
     }
 
-
     @Override
     protected String doInBackground(Object... params) {
         try {
+            //Run method to clear all data from all database tables - removing saved viewed recipes.
             SQLiteDb db = new SQLiteDb(ctx);
-            //Clearing data from database.
             db.clearDatabaseTables();
-            //Clear any images that are saved using a non-temporary name eg.3020Thumbnail instead of 3020_Thumbnail_Temp
+            /*Run method to clear all images that are saved using a permanent storage name (passing false to method).
+              eg.3020Thumbnail not 3020_Thumbnail_Temp*/
             Storage storage = new Storage();
             storage.clearImgCache(ctx,false);
 
+            //Return success so onPostExecute knows doInBackground succeeded.
             return "success";
         }catch (Exception e)
         {
@@ -38,9 +36,9 @@ public class SQLiteDeleteRecipesAsync extends AsyncTask<Object, String, String> 
         }
     }
 
-
     @Override
     protected void onPostExecute(String result) {
+        //If result is null error occurred. Else succeeded. Toast corresponding message to user.
         if(result == null)
         {
             Toast.makeText(ctx, "Error occurred whilst clearing recently viewed recipes...", Toast.LENGTH_SHORT).show();
@@ -49,8 +47,5 @@ public class SQLiteDeleteRecipesAsync extends AsyncTask<Object, String, String> 
         {
             Toast.makeText(ctx, "Recently viewed recipes deleted.", Toast.LENGTH_SHORT).show();
         }
-
-
     }
-
 }

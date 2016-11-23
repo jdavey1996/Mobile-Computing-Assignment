@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     android:background="#ffffff"
     android:orientation="vertical"
-    android:padding="30dp">
+    android:padding="30dp"
+    android:weightSum="1">
 
     <LinearLayout
         android:id="@+id/spinLayout"
@@ -31,7 +32,7 @@
             android:padding="5dp" />
 
         <ImageView
-            android:id="@+id/queryClearBtn"
+            android:id="@+id/clearSearchQueryBtn"
             android:layout_width="30dp"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
@@ -85,17 +86,16 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/submitQuery"
+        android:id="@+id/searchBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Get recipes" />
 
-    <TextView
-        android:id="@+id/recentlyViewedBtn"
+    <Button
+        android:text="View recently viewed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="View recently viewed"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:id="@+id/recentlyViewedBtn" />
 
 
 </LinearLayout>

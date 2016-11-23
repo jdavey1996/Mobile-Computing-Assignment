@@ -1,14 +1,15 @@
 package com.josh_davey.mobile_computing_assignment;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.widget.Toast;
 
-//https://developer.android.com/training/monitoring-device-state/connectivity-monitoring.html
-
+/*REFERENCES:
+    https://developer.android.com/training/monitoring-device-state/connectivity-monitoring.html
+ */
 public class NetworkStatus {
+    //Variables.
     Context ctx;
 
     public NetworkStatus(Context ctx)
@@ -16,6 +17,7 @@ public class NetworkStatus {
         this.ctx=ctx;
     }
 
+    //Get boolean value for current network state availability.
     public Boolean checkConnection()
     {
         ConnectivityManager cm = (ConnectivityManager)ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -32,6 +34,4 @@ public class NetworkStatus {
         }
         return status;
     }
-
-
 }

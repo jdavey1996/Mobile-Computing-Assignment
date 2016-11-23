@@ -3,8 +3,10 @@ package com.josh_davey.mobile_computing_assignment;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-//http://www.parcelabler.com/
-//https://developer.android.com/reference/android/os/Parcelable.html
+/*References:
+    http://www.parcelabler.com/
+    https://developer.android.com/reference/android/os/Parcelable.html*/
+//A constructor class for Recipe ingredients. This parcels up the objects so they can be sent in an ArrayList via intents.
 public class RecipeIngredientsConstructor implements Parcelable{
     String ingredient, amount, unit;
 
@@ -27,14 +29,12 @@ public class RecipeIngredientsConstructor implements Parcelable{
         return unit;
     }
 
-
-
-   @Override
-   public void writeToParcel(Parcel dest, int flags) {
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
        dest.writeString(ingredient);
        dest.writeString(amount);
        dest.writeString(unit);
-   }
+    }
 
     private RecipeIngredientsConstructor(Parcel in) {
         ingredient = in.readString();
@@ -42,15 +42,12 @@ public class RecipeIngredientsConstructor implements Parcelable{
         unit = in.readString();
     }
 
-
     @Override
     public int describeContents() {
         return 0;
     }
 
-    public static final Creator<RecipeIngredientsConstructor> CREATOR
-            = new Creator<RecipeIngredientsConstructor>() {
-
+    public static final Creator<RecipeIngredientsConstructor> CREATOR = new Creator<RecipeIngredientsConstructor>() {
         @Override
         public RecipeIngredientsConstructor createFromParcel(Parcel in) {
             return new RecipeIngredientsConstructor(in);

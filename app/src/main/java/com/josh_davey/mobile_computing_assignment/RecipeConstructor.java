@@ -2,9 +2,11 @@ package com.josh_davey.mobile_computing_assignment;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
-//http://www.parcelabler.com/
-//https://developer.android.com/reference/android/os/Parcelable.html
+/*REFERENCES:
+    http://www.parcelabler.com/
+    https://developer.android.com/reference/android/os/Parcelable.html
+*/
+//A constructor class for Recipes. This parcels up the objects so they can be sent in an ArrayList via intents.
 public class RecipeConstructor implements Parcelable{
     String id, title, readyInMinutes;
 
@@ -27,14 +29,12 @@ public class RecipeConstructor implements Parcelable{
         return readyInMinutes;
     }
 
-
-
-   @Override
-   public void writeToParcel(Parcel dest, int flags) {
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
        dest.writeString(id);
        dest.writeString(title);
        dest.writeString(readyInMinutes);
-   }
+    }
 
     private RecipeConstructor(Parcel in) {
         id = in.readString();
@@ -42,15 +42,12 @@ public class RecipeConstructor implements Parcelable{
         readyInMinutes = in.readString();
     }
 
-
     @Override
     public int describeContents() {
         return 0;
     }
 
-    public static final Parcelable.Creator<RecipeConstructor> CREATOR
-            = new Parcelable.Creator<RecipeConstructor>() {
-
+    public static final Parcelable.Creator<RecipeConstructor> CREATOR = new Parcelable.Creator<RecipeConstructor>() {
         @Override
         public RecipeConstructor createFromParcel(Parcel in) {
             return new RecipeConstructor(in);

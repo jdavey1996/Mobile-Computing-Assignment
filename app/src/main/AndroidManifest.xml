@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.josh_davey.mobile_computing_assignment">
+
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -16,7 +17,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <!--Retains instance when changing orientation - https://developer.android.com/guide/topics/resources/runtime-changes.html-->
         <activity android:name=".MainActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -46,7 +46,7 @@
             </intent-filter>
         </activity>
 
-
+        <!--API keys-->
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="dee582ed2412e34b4a5dbcbcdadab4c2a1f6358e" />

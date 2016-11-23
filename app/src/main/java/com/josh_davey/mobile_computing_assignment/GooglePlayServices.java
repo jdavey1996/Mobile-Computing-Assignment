@@ -6,26 +6,30 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.common.api.GoogleApiClient;
 
+/*References:
+    https://developers.google.com/android/guides/setup
+    http://stackoverflow.com/questions/22493465/check-if-correct-google-play-service-available-unfortunately-application-has-s*/
 
 public class GooglePlayServices {
-
+    //Variables.
     Context ctx;
     Activity activity;
+
     public GooglePlayServices(Context ctx, Activity activity)
     {
         this.ctx = ctx;
         this.activity = activity;
     }
 
-    //https://developers.google.com/android/guides/setup
-    //http://stackoverflow.com/questions/22493465/check-if-correct-google-play-service-available-unfortunately-application-has-s
     public boolean checkAvailable()
     {
+        //Get result code for GooglePlayServices availability.
         GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
         int availability = googleApiAvailability.isGooglePlayServicesAvailable(ctx);
+
+        /*If is available, return true, if not return false, check if it's resolvable and show corresponding dialog if so.
+             If it's not resolvable, toast error.*/
         if (availability == ConnectionResult.SUCCESS)
         {
             return true;

@@ -5,22 +5,22 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-//REFERENCES:
-    //http://stackoverflow.com/questions/18747975/difference-between-fragmentpageradapter-and-fragmentstatepageradapter
-    //https://developer.android.com/training/implementing-navigation/lateral.html
-    //https://developer.android.com/reference/android/support/v4/app/FragmentPagerAdapter.html
+/*REFERENCES:
+    https://developer.android.com/reference/android/support/v4/app/FragmentPagerAdapter.html*/
 
 public class FragmentAdapter extends FragmentPagerAdapter{
     //Variables.
     int count;
     Activity activity;
+
     public FragmentAdapter(FragmentManager fm, int count, Activity activity) {
         super(fm);
         this.count = count;
         this.activity = activity;
     }
 
-    //Return correct fragment based on position given.
+    /*Return correct fragment based on position given. Checks the activity class name to ensure correct fragment is returned,
+      as this class is used by both MainActivity Fragments and RecipeActivity Fragments.*/
     @Override
     public Fragment getItem(int position) {
         switch (position) {

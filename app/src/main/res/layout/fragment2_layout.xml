@@ -7,28 +7,26 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:text="Find nearby supermarkets"
-        android:id="@+id/getNearbyBtn"
-        android:visibility="gone" />
+        android:id="@+id/getNearbyBtn"/>
 
     <ProgressBar
-        android:theme="@style/LinearProgress"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:theme="@style/ProgressBarTheme"
         android:id="@+id/placesProgress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:indeterminate="true"
-        android:layout_margin="0dp"
-        android:padding="0dp"
-        android:visibility="gone" />
+        android:layout_marginBottom="-8dp"
+        android:layout_marginTop="-4dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:indeterminate="false"
+        android:progress="100" />
 
-
-
-    <com.google.android.gms.maps.MapView android:id="@+id/mapview"
-        android:theme="@style/LinearProgress"
+    <com.google.android.gms.maps.MapView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/mapview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
-        xmlns:android="http://schemas.android.com/apk/res/android" />
+        android:layout_marginBottom="10dp"/>
 </LinearLayout>

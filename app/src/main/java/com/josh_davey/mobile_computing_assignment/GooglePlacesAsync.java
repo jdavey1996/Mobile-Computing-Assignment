@@ -1,19 +1,13 @@
 package com.josh_davey.mobile_computing_assignment;
 
-
 import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.util.Log;
-import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -21,15 +15,19 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.net.URL;
-
-//https://developers.google.com/places/web-service/search
-//https://developers.google.com/places/web-service/supported_types
+/*References:
+    https://developers.google.com/places/web-service/search
+    https://developers.google.com/places/web-service/supported_types
+    http://www.materialdoc.com/linear-progress/
+    http://stackoverflow.com/questions/19167954/use-uri-builder-in-android-or-create-url-with-variables*/
 public class GooglePlacesAsync extends AsyncTask<Double,String,JSONArray>
 {
     //Variables.
     Context ctx;
     Activity activity;
     GoogleMap googleMap;
+    ProgressBar placesProgress;
+    HttpConnection httpConnection;
 
     public GooglePlacesAsync(Context ctx, Activity activity, GoogleMap googleMap) {
         this.ctx = ctx;
@@ -41,9 +39,10 @@ public class GooglePlacesAsync extends AsyncTask<Double,String,JSONArray>
     protected void onPreExecute() {
         super.onPreExecute();
         Toast.makeText(ctx, "Location acquired, attempting to find nearby supermarkets.", Toast.LENGTH_SHORT).show();
-        //Enables visibility for a progressbar and accompanying text http://www.materialdoc.com/linear-progress/
-        ProgressBar locationMarkersProgress = (ProgressBar)activity.findViewById(R.id.placesProgress);
-        locationMarkersProgress.setVisibility(View.VISIBLE);
+
+        //Gets instance of placesProgress progress bar. Sets it to indeterminate so it constantly animates.
+        placesProgress = (ProgressBar)activity.findViewById(R.id.placesProgress);
+        placesProgress.setIndeterminate(true);
     }
 
 
@@ -52,9 +51,7 @@ public class GooglePlacesAsync extends AsyncTask<Double,String,JSONArray>
         Double latitude = params[0];
         Double longitude = params[1];
         try {
-
-            //Thread.sleep(10000);
-            //http://stackoverflow.com/questions/19167954/use-uri-builder-in-android-or-create-url-with-variables
+            //Build URI using the devices location to get nearby places.
             Uri uri = Uri.parse("https://maps.googleapis.com/maps/api/place/nearbysearch/json?")
                     .buildUpon()
                     .appendQueryParameter("location", latitude+","+longitude)
@@ -63,14 +60,16 @@ public class GooglePlacesAsync extends AsyncTask<Double,String,JSONArray>
                     .appendQueryParameter("key", "AIzaSyDS9PUfBF9KJnAxcIOE42oUEAGJZEgdti0")
                     .build();
 
+            //Convert URI to URL.
             URL url = new URL(uri.toString());
-            HttpConnection httpConnection = new HttpConnection(url);
+
+            //Get data by running the HttpConnection class with the previously created URL, then get the text data into a JSON array.
+            httpConnection = new HttpConnection(url);
             JSONArray data = new JSONObject(httpConnection.getTextData()).getJSONArray("results");
 
             return data;
         }catch (Exception e)
         {
-            e.printStackTrace();
             return null;
         }
     }
@@ -80,22 +79,24 @@ public class GooglePlacesAsync extends AsyncTask<Double,String,JSONArray>
         super.onProgressUpdate(values);
     }
 
-
     @Override
     protected void onPostExecute(JSONArray data) {
-        //Disables visibility for a progressbar and accompanying text - data has finished loading.
-        ProgressBar placesProgress = (ProgressBar)activity.findViewById(R.id.placesProgress);
-        placesProgress.setVisibility(View.GONE);
+        //Sets indeterminate to false and progress to 100 so the bar is solid - data has finished loading.
+        placesProgress.setIndeterminate(false);
+        placesProgress.setProgress(100);
 
+        //If returned JSONArray data equals null, error occurred. Else data downloaded successfully.
         if (data == null)
         {
             Toast.makeText(ctx, "Unable to get nearest supermarkets, check your network connection.", Toast.LENGTH_SHORT).show();
         }
         else {
             try {
+                //Check if returned JSONArray contains any data. If not, No supermarkets nearby.
                 if(data.length() >0) {
                     //Remove existing markers on the map.
                     googleMap.clear();
+                    //Loop through JSON array, adding marker to the map.
                     for (int i = 0; i < data.length(); i++) {
                         //Create new marker.
                         MarkerOptions marker = new MarkerOptions();
@@ -128,9 +129,7 @@ public class GooglePlacesAsync extends AsyncTask<Double,String,JSONArray>
             } catch (Exception e) {
                 //This would call if the string "name" couldn't be found in the downloaded data - would only occur if Google changed their JSON file structure.
                 Toast.makeText(ctx, "Unknown Google API error. Please try again later.", Toast.LENGTH_SHORT).show();
-                e.printStackTrace();
             }
         }
     }
-
 }
