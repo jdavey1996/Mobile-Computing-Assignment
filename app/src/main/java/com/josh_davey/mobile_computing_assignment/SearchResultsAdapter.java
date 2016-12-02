@@ -46,18 +46,21 @@ public class SearchResultsAdapter extends ArrayAdapter<RecipeConstructor> {
         TextView recipeReadyIn = (TextView) view.findViewById(R.id.recipeReadyIn);
         recipeReadyIn.setText("Ready in "+item.getReadyInMinutes()+" minutes");
 
-        //Check if image was loaded from cache or just viewed via search query. Then set correct name of image in imagePath.
-        String imagePath;
-        if (loadedFromCache) {
-            imagePath = item.getId() + "_thumbnail";
-        }else
-        {
-            imagePath = item.getId() + "_thumbnail_temp";
-        }
         //Set recipeThumbnail ImageView to the correct cached image based on the corresponding recipeId.
         ImageView recipeThumbnail = (ImageView)view.findViewById(R.id.recipeThumbnail);
         Storage getImage = new Storage();
-        recipeThumbnail.setImageBitmap(getImage.getTepImg(ctx,imagePath));
+        //Check if image was loaded from cache or just viewed via search query. Then set correct name of image in imagePath.
+        String imagePath;
+        if (loadedFromCache) {
+            //If loaded from cache, get and set image for this recipe from permanent internal storage location.
+            imagePath = item.getId() + "_thumbnail";
+            recipeThumbnail.setImageBitmap(getImage.getImg(ctx,imagePath,false));
+        }else
+        {
+            //If not loaded from cache, get and set image for this recipe from internal cache directory location.
+            imagePath = item.getId() + "_thumbnail_temp";
+            recipeThumbnail.setImageBitmap(getImage.getImg(ctx,imagePath,true));
+        }
 
         //Onclick method for clicking a list item.
         view.setOnClickListener(new View.OnClickListener() {

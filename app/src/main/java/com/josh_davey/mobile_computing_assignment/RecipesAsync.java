@@ -97,7 +97,7 @@ public class RecipesAsync extends AsyncTask<String, String, ArrayList<RecipeCons
                         //Get image and save.
                         HttpConnection getImageHttpCon = new HttpConnection(recipeImageUrl);
                         Storage saveImg = new Storage();
-                        saveImg.saveTempImg(ctx, recipeId+"_thumbnail_temp", getImageHttpCon.getImageData());
+                        saveImg.saveImg(ctx, recipeId+"_thumbnail_temp", getImageHttpCon.getImageData(),true);
                     }
 
                     //Return downloaded data to onPostExecute.

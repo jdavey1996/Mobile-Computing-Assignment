@@ -100,7 +100,7 @@ public class RecipeDetailAsync extends AsyncTask<String, String, RecipeDetailAsy
               it's best to temporarily save it, and once the recipe has loaded in RecipeActivity, save it permanently along with
               the rest of the data.*/
             Storage saveImg = new Storage();
-            saveImg.saveTempImg(ctx, recipeId + "_full_size_temp", getImageHttpCon.getImageData());
+            saveImg.saveImg(ctx, recipeId + "_full_size_temp", getImageHttpCon.getImageData(),true);
 
             //Use inner class ReturnObject to costruct and object containing all recipe information to return to onPostExecute.
             ReturnObject returnObject = new ReturnObject(recipeId, title, readyInTime, instructions, ingredients);

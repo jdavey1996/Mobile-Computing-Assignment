@@ -67,19 +67,23 @@ public class RecipeActivity extends AppCompatActivity {
         String imagePath;
         //Get recipe ID for loaded recipe.
         String id = getIntent().getStringExtra("recipeId");
+
         //Get instance of Storage class to get image.
         Storage getImage = new Storage();
-        //Set imagePath variable with file name depending on whether the recipe has just been downloaded or has been viewed from recently viewed.
-        if (!getIntent().getBooleanExtra("loadedFromCache", false)) {
-            imagePath = id + "_full_size_temp";
-        } else {
-            imagePath = id + "_full_size";
-        }
-
         //Set image for recipe. Attempts to get it, toasts if unable to.
         ImageView recipeImg = (ImageView) findViewById(R.id.recipeDetailImg);
         try {
-            recipeImg.setImageBitmap(getImage.getTepImg(this, imagePath));
+            //Set imagePath variable with file name depending on whether the recipe has just been downloaded or has been viewed from recently viewed.
+            if (!getIntent().getBooleanExtra("loadedFromCache", false)) {
+                //Get temporary image from cache directory.
+                imagePath = id + "_full_size_temp";
+                recipeImg.setImageBitmap(getImage.getImg(this, imagePath,true));
+            } else {
+                //Get permanent image from permanent directory location.
+                imagePath = id + "_full_size";
+                recipeImg.setImageBitmap(getImage.getImg(this, imagePath,false));
+            }
+
         }catch (Exception e)
         {
             Toast.makeText(this, "Unable to get image for this recipe.", Toast.LENGTH_SHORT).show();

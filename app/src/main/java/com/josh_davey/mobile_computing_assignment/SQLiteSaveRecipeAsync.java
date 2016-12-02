@@ -34,18 +34,20 @@ public class SQLiteSaveRecipeAsync extends AsyncTask<Object, String, String> {
         ArrayList<String> instructions = (ArrayList<String>) params[4];
 
         try {
-            /*Get temporary saved images and save in permanent location. -
-              No need to encrpyt images as files on internal storage are private to this application.*/
+            //Get temporary saved images and save in permanent location.
             Storage getImage = new Storage();
-            Bitmap fullsizetemp = getImage.getTepImg(ctx,recipeId+"_full_size_temp");
-            getImage.saveTempImg(ctx,recipeId+"_full_size",fullsizetemp);
+            //Get full size image from cache directory.
+            Bitmap fullsizetemp = getImage.getImg(ctx,recipeId+"_full_size_temp",true);
+            //Save in permanent internal directory location.
+            getImage.saveImg(ctx,recipeId+"_full_size",fullsizetemp,false);
 
-            Bitmap thumbnailtemp = getImage.getTepImg(ctx,recipeId+"_thumbnail_temp");
-            getImage.saveTempImg(ctx,recipeId+"_thumbnail",thumbnailtemp);
-
-            SQLiteDb sql = new SQLiteDb(ctx);
+            //Get full size image from cache directory.
+            Bitmap thumbnailtemp = getImage.getImg(ctx,recipeId+"_thumbnail_temp",true);
+            //Save in permanent internal directory location.
+            getImage.saveImg(ctx,recipeId+"_thumbnail",thumbnailtemp,false);
 
             //Insert data into database tables.
+            SQLiteDb sql = new SQLiteDb(ctx);
             sql.insertInto_TABLE_RECIPE_INFO(recipeId, recipeTitle, readyIn,getDateTime());
             sql.insertInto_TABLE_RECIPE_INGREDIENTS(recipeId, ingredients);
             sql.insertInto_TABLE_RECIPE_INSTRUCTIONS(recipeId, instructions);

@@ -34,9 +34,8 @@ public class SearchResultsActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        /*When this activity is destroyed, run a method that clears any temporary images.
-          Passes true to this method so temporary images are removed, not permanent one.*/
+        /*When this activity is destroyed, run a method that clears any temporary images. - These images are only required to pass between activites when viewing downloaded data.*/
         Storage storage = new Storage();
-        storage.clearImgCache(this, true);
+        storage.clearImgCache(this);
     }
 }

@@ -89,14 +89,8 @@ public class TweetActivity extends Activity {
                 Storage storage = new Storage();
                 //Check if storage is readable and writable before attempting to take picture.
                 if(storage.isExternalStorageWritable()) {
-                    //Create directory to store image.
-                    String directory = "appimages";
-                    String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + File.separator + directory;
-                    File outputDir = new File(path);
-                    outputDir.mkdirs();
-
-                    //Create file to store image.
-                    File newFile = new File(path + "/" + "latestImgToTweet.png");
+                    //Create file to store image, within external storage picture directory.
+                    File newFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/" + "latestImgToTweet.png");
 
                     //Set uri to image path so it can be accessed when uploading to twitter.
                     savedImageUri = Uri.fromFile(newFile);

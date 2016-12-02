@@ -23,10 +23,9 @@ public class SQLiteDeleteRecipesAsync extends AsyncTask<Object, String, String> 
             //Run method to clear all data from all database tables - removing saved viewed recipes.
             SQLiteDb db = new SQLiteDb(ctx);
             db.clearDatabaseTables();
-            /*Run method to clear all images that are saved using a permanent storage name (passing false to method).
-              eg.3020Thumbnail not 3020_Thumbnail_Temp*/
+            /*Run method to clear all images that are saved in a permanent storage location*/
             Storage storage = new Storage();
-            storage.clearImgCache(ctx,false);
+            storage.removeSavedImg(ctx);
 
             //Return success so onPostExecute knows doInBackground succeeded.
             return "success";
