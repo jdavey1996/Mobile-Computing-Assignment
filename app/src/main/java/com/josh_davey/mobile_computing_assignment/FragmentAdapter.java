@@ -6,7 +6,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 /*REFERENCES:
-    https://developer.android.com/reference/android/support/v4/app/FragmentPagerAdapter.html*/
+       https://www.simplifiedcoding.net/android-tablayout-example-using-viewpager-fragments/#
+       http://stackoverflow.com/questions/18747975/difference-between-fragmentpageradapter-and-fragmentstatepageradapter*/
 
 public class FragmentAdapter extends FragmentPagerAdapter{
     //Variables.

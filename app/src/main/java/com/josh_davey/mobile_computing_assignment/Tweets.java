@@ -28,13 +28,10 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 
 /*References:
-    http://stackoverflow.com/questions/27267809/using-custom-login-button-with-twitter-fabric
-    https://futurestud.io/tutorials/retrofit-synchronous-and-asynchronous-requests
-    http://stackoverflow.com/questions/28075136/how-can-i-use-retrofit-library-with-progressbar
+    http://stackoverflow.com/questions/27404651/android-fabric-twitter-authorize-callback-is-not-called
     http://stackoverflow.com/questions/31785698/android-adding-image-to-tweet-using-fabric-twitter-rest-api-and-retrofit
     https://docs.fabric.io/android/twitter/access-rest-api.html
     https://dev.twitter.com/rest/reference/post/statuses/update
-    http://stackoverflow.com/questions/34562950/post-multipart-form-data-using-retrofit-2-0-including-image
     http://stackoverflow.com/questions/29743676/how-to-logout-from-twitter-using-fabric-sdk-for-android*/
 
 public class Tweets {
@@ -81,7 +78,7 @@ public class Tweets {
         //Attempt to authorise twitter client.
         mTwitterAuthClient.authorize(activity, new com.twitter.sdk.android.core.Callback<TwitterSession>() {
 
-            //If successful, send either send the tweet or upload media, depending on whether an image has been captured for tweeting.
+            //If successful, either send the tweet or upload media, depending on whether an image has been captured for tweeting.
             @Override
             public void success(Result<TwitterSession> twitterSessionResult) {
                 if(savedImageUri == null) {

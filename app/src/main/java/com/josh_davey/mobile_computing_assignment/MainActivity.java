@@ -16,12 +16,9 @@ import net.sqlcipher.database.SQLiteDatabase;
 
 import io.fabric.sdk.android.Fabric;
 /*REFERENCES:
-    https://developer.android.com/training/implementing-navigation/lateral.html
     https://developer.android.com/reference/android/support/design/widget/TabLayout.html
-    https://developer.android.com/reference/android/support/v4/app/FragmentPagerAdapter.html
     http://stackoverflow.com/questions/18341779/preload-fragments-view-in-viewpager-on-first-run
     https://www.simplifiedcoding.net/android-tablayout-example-using-viewpager-fragments/#
-    https://developer.android.com/training/appbar/index.html
  */
 public class MainActivity extends AppCompatActivity {
 

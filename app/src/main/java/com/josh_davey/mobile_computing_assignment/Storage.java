@@ -12,8 +12,6 @@ import java.io.FileOutputStream;
 
 /*References:
     https://developer.android.com/training/basics/data-storage/files.html
-    http://stackoverflow.com/questions/3394765/how-to-check-available-space-on-android-device-on-sd-card
-    http://stackoverflow.com/questions/7540386/android-saving-and-loading-a-bitmap-in-cache-from-diferent-activities
     http://stackoverflow.com/questions/26986637/can-android-clear-files-from-the-cache-directory-of-my-application-while-it-is-r*/
 
 public class Storage {

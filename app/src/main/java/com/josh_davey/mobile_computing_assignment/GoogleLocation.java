@@ -108,8 +108,8 @@ public class GoogleLocation implements GoogleApiClient.ConnectionCallbacks, Goog
 
     public void stopLocationUpdates()
     {
-        //If the googleApiClient is connected, stop location updates and disconnect (Save battery).
-        if (googleApiClient != null && googleApiClient.isConnected())
+        //If the googleApiClient is connected and requesting location, stop location updates and disconnect (Save battery).
+        if (googleApiClient != null && googleApiClient.isConnected()&& requestingLocation)
         {
             //Remove location updates.
             LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);

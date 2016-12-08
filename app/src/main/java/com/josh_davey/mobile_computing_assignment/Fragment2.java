@@ -107,7 +107,9 @@ public class Fragment2 extends Fragment implements OnMapReadyCallback {
         //Google maps docs requirement.
         mapView.onStop();
         //Call stopLocationUpdates method. This checks if the app is still listening for location updates, stopping them if true.
-        googleLocation.stopLocationUpdates();
+        if(googleLocation != null) {
+            googleLocation.stopLocationUpdates();
+        }
     }
 
     @Override
